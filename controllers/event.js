@@ -1,3 +1,5 @@
+const Event = require('../models/event')
+
 exports.createEvent = (req, res, next) => {};
 
 exports.getEvents = (req, res, next) => {};
