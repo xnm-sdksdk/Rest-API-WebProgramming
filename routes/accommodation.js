@@ -1,7 +1,5 @@
 const express = require("express");
-
 const router = express.Router();
-
 const accommodationsController = require("../controllers/accommodation");
 
 // Get ALL Accommodations
@@ -14,13 +12,18 @@ router.get(
 );
 
 // POST Accommodation
-router.post('/accommodations', accommodationsController.createAccommodation);
+router.post("/accommodations", accommodationsController.createAccommodation);
 
 // PUT Accommodation BY ID
-router.put('/accommodations/:id', accommodationsController.updateAccommodationById)
+router.put(
+  "/accommodations/:id",
+  accommodationsController.updateAccommodationById
+);
 
 // Delete Accommodation BY ID
-router.delete('/accommodations/:id', accommodationsController.deleteAccommodationById)
-
+router.delete(
+  "/accommodations/:id",
+  accommodationsController.deleteAccommodationById
+);
 
 module.exports = router;
