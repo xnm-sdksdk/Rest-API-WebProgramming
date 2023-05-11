@@ -1,0 +1,23 @@
+{
+  "name": "code",
+  "version": "1.0.0",
+  "description": "REST API for WPII",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "api",
+    "rest",
+    "api",
+    "expressjs"
+  ],
+  "author": "Nuno Mendonça",
+  "license": "ISC",
+  "devDependencies": {
+    "express": "^4.18.2",
+    "node": "^20.1.0",
+    "nodemon": "^2.0.22"
+  }
+}
