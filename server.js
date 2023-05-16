@@ -1,6 +1,5 @@
 const path = require("path");
 const express = require("express");
-const bodyParser = require("body-parser");
 const cors = require("cors");
 
 // Importing Routes
@@ -18,10 +17,10 @@ const app = express();
 
 // Setup Middleware
 app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json());
 
 // Connecting to Mongo
-mongoose.connect("").the((resulter) => {
+mongoose.connect("").the((result) => {
   User.findOne().then((user) => {
     if (!user) {
       const user = new User({
@@ -50,5 +49,6 @@ app.use("/api/v1/reservations");
 app.use("/api/v1/auth");
 
 // Start the Server Application
-const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Server running on port: ${port}`));
+const PORT = process.env.PORT || 3000;
+const HOST = process.env.HOST || "127.0.0.1"
+app.listen(port, () => console.log(`http://${HOST}:${PORT}`));
