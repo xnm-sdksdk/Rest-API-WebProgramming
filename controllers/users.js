@@ -1,5 +1,6 @@
 const Users = require("../models/users");
-const { v4: uuidv4 } = require('uuid');
+const { v4: uuidv4 } = require("uuid");
+const jwt = require("jsonwebtoken");
 
 // Create a new user
 exports.registerUser = async (req, res, next) => {
@@ -7,18 +8,26 @@ exports.registerUser = async (req, res, next) => {
     const { name, email, password, password_confirmation, role } = req.body;
     const accommodations = [];
     const events = [];
-    const user = new User({name, email, password, password_confirmation, role, accommodations, events});
+    const user = new User({
+      name,
+      email,
+      password,
+      password_confirmation,
+      role,
+      accommodations,
+      events,
+    });
     await user.save();
 
     const authKey = uuidv4();
 
     const response = {
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        accommodations: user.accommodations,
-        events: user.events,
-        auth_key : authKey
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      accommodations: user.accommodations,
+      events: user.events,
+      auth_key: authKey,
     };
     res.status(201).json(response);
   } catch (err) {
@@ -38,7 +47,23 @@ exports.loginUser = async (req, res, next) => {
       return;
     }
 
-    res.json(user);
+    const isValidPassword = await user.comparePassword(password);
+    if (!isValidPassword) {
+      res.status(401).json({ err: "Incorrect password." });
+      return;
+    }
+
+    const token = jwt.sign({ userId: user._id }, "key", { expiresIn: "1h" });
+
+    const response = {
+      userId: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      token,
+    };
+
+    res.json(response);
   } catch (err) {
     res
       .status(500)
