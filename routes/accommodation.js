@@ -3,7 +3,7 @@ const router = express.Router();
 const accommodationsController = require("../controllers/accommodation");
 
 // Get ALL Accommodations
-router.get("/", accommodationsController.getAccommodations);
+router.get("/accommodations", accommodationsController.getAccommodations);
 
 // Get Accommodation BY ID
 router.get(
