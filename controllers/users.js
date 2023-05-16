@@ -13,3 +13,7 @@ exports.getUserById = (req, res, next) => {};
 exports.updateUserById = (req, res, next) => {};
 
 exports.deleteUserById = (req, res, next) => {};
+
+exports.addInterest = (req, res, next) => {};
+
+exports.removeInterest = (req, res, next) => {};
