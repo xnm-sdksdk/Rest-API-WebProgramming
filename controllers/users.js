@@ -15,13 +15,12 @@ exports.registerUser = async (req, res, next) => {
     const response = {
         name: user.name,
         email: user.email,
-        password: user.password,
         role: user.role,
         accommodations: user.accommodations,
         events: user.events,
-        auth_key : 
+        auth_key : authKey
     };
-    res.status.json(user);
+    res.status(201).json(response);
   } catch (err) {
     res
       .status(500)
