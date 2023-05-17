@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
 const accommodationSchema = new mongoose.Schema({
   acc_id: {
