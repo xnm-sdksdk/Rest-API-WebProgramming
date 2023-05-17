@@ -4,36 +4,37 @@ const router = express.Router();
 const usersController = require("../controllers/users");
 
 // POST Register new Users
-router.post("/api/v1/users", usersController.registerUser);
+router.route("/api/v1/users").post(usersController.registerUser);
 
 // POST Login User
-router.post("/api/v1/login", usersController.loginUser);
+router.route("/api/v1/login").post(usersController.loginUser);
 
 // POST Logout User
-router.post("/api/v1/logout", usersController.logoutUser);
+router.route("/api/v1/logout").post(usersController.logoutUser);
 
 // PUT Refresh auth token
-router.put("/api/v1/refresh-token", usersController.refreshToken);
+router.route("/api/v1/refresh-token").put(usersController.refreshToken);
 
 // GET ALL Users
-router.get("/api/v1/users/", usersController.getUsers);
+router.route("/api/v1/users/").get(usersController.getUsers);
 
 // GET User BY ID
-router.get("/api/v1/users/:id", usersController.getUserById);
+router.route("/api/v1/users/:id").get(usersController.getUserById);
 
 // PUT Users BY ID
-router.put("/api/v1/users/:id", usersController.updateUserById);
+router.route("/api/v1/users/:id").put(usersController.updateUserById);
 
 // DELETE Users BY ID
-router.delete("/api/v1/delete/:id", usersController.deleteUserById);
+router.route("/api/v1/delete/:id").delete(usersController.deleteUserById);
 
 // POST Show interest in an Event
-router.post("/api/v1/users/:userId/interests/:eventId", usersController.addInterest);
+router
+  .route("/api/v1/users/:userId/interests/:eventId")
+  .post(usersController.addInterest);
 
 // DELETE Remove interest in an Event
-router.delete(
-  "/api/v1/users/:userId/interests/:eventId",
-  usersController.removeInterest
-);
+router
+  .route("/api/v1/users/:userId/interests/:eventId")
+  .delete(usersController.removeInterest);
 
 module.exports = router;

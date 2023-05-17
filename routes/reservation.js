@@ -3,18 +3,28 @@ const router = express.Router();
 const reservationsController = require("../controllers/reservation");
 
 // Get ALL Reservations
-router.get("/api/v1/reservations", reservationsController.getAccommodations);
+router
+  .route("/api/v1/reservations")
+  .get(reservationsController.getAccommodations);
 
 // Get Reservations BY ID
-router.get("/api/v1/reservations/:id", reservationsController.getAccommodationById);
+router
+  .route("/api/v1/reservations/:id")
+  .get(reservationsController.getAccommodationById);
 
 // POST Reservations
-router.post("/api/v1/reservations", reservationsController.createAccommodation);
+router
+  .route("/api/v1/reservations")
+  .post(reservationsController.createAccommodation);
 
 // PUT Reservations BY ID
-router.put("/api/v1/reservations/:id", reservationsController.updateAccommodationById);
+router
+  .route("/api/v1/reservations/:id")
+  .put(reservationsController.updateAccommodationById);
 
 // Delete Reservations BY ID
-router.delete("/api/v1/reservations/:id", reservationsController.deleteAccommodationById);
+router
+  .route("/api/v1/reservations/:id")
+  .delete(reservationsController.deleteAccommodationById);
 
 module.exports = router;
