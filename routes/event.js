@@ -3,18 +3,18 @@ const router = express.Router();
 const eventsController = require("../controllers/event");
 
 // Get ALL Events
-router.get("/events", eventsController.getAccommodations);
+router.get("/api/v1/events", eventsController.getAccommodations);
 
 // Get Events BY ID
-router.get("/events/:id", eventsController.getAccommodationById);
+router.get("/api/v1/events/:id", eventsController.getAccommodationById);
 
 // POST Events
-router.post("/events", eventsController.createAccommodation);
+router.post("/api/v1/events", eventsController.createAccommodation);
 
 // PUT Events BY ID
-router.put("/events/:id", eventsController.updateAccommodationById);
+router.put("/api/v1/events/:id", eventsController.updateAccommodationById);
 
 // Delete Events BY ID
-router.delete("/events/:id", eventsController.deleteAccommodationById);
+router.delete("/api/v1/events/:id", eventsController.deleteAccommodationById);
 
 module.exports = router;

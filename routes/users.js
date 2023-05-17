@@ -4,40 +4,35 @@ const router = express.Router();
 const usersController = require("../controllers/users");
 
 // POST Register new Users
-router.post("/register", usersController.registerUser);
+router.post("/api/v1/users", usersController.registerUser);
 
 // POST Login User
-router.post("/login", usersController.loginUser);
+router.post("/api/v1/login", usersController.loginUser);
 
 // POST Logout User
-router.post("/logout", usersController.logoutUser);
+router.post("/api/v1/logout", usersController.logoutUser);
 
 // PUT Refresh auth token
-router.put("/refresh-token", usersController.refreshToken);
+router.put("/api/v1/refresh-token", usersController.refreshToken);
 
 // GET ALL Users
-router.get("/users/", usersController.getUsers);
+router.get("/api/v1/users/", usersController.getUsers);
 
 // GET User BY ID
-router.get("/users/:id", usersController.getUserById);
+router.get("/api/v1/users/:id", usersController.getUserById);
 
 // PUT Users BY ID
-router.put("/users/:id", usersController.updateUserById);
+router.put("/api/v1/users/:id", usersController.updateUserById);
 
 // DELETE Users BY ID
-router.delete("/delete/:id", usersController.deleteUserById);
+router.delete("/api/v1/delete/:id", usersController.deleteUserById);
 
 // POST Show interest in an Event
-router.post(
-  "/users/:userId/interests/:eventId",
-  authenticateUser,
-  usersController.addInterest
-);
+router.post("/api/v1/users/:userId/interests/:eventId", usersController.addInterest);
 
 // DELETE Remove interest in an Event
 router.delete(
-  "/users/:userId/interests/:eventId",
-  authenticateUser,
+  "/api/v1/users/:userId/interests/:eventId",
   usersController.removeInterest
 );
 
