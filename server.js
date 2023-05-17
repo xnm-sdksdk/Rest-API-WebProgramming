@@ -23,7 +23,7 @@ app.use(express.json());
 // Connecting to Mongo
 mongoose
   .connect(
-    "mongodb+srv://40210260:R56b6536I@cluster0.u9z6ifo.mongodb.net/?retryWrites=true&w=majority"
+    ""
   )
   .then((result) => {
     User.findOne().then((user) => {
