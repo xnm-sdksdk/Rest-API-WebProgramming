@@ -1,10 +1,11 @@
 const path = require("path");
 const express = require("express");
 const cors = require("cors");
+const mongoose = require("mongoose");
 
 // Importing Routes
 const userRoutes = require("./routes/users");
-const eventRoutes = require("./routes/events");
+//const eventRoutes = require("./routes/event");
 const accommodationRoutes = require("./routes/accommodation");
 const reservationRoutes = require("./routes/reservation");
 const authRoutes = require("./routes/auth");
@@ -20,10 +21,10 @@ app.use(cors());
 app.use(express.json());
 
 // Connecting to Mongo
-mongoose.connect("").the((result) => {
+mongoose.connect("mongodb+srv://40210260:R56b6536I@cluster0.u9z6ifo.mongodb.net/?retryWrites=true&w=majority").the((result) => {
   User.findOne().then((user) => {
     if (!user) {
-      const user = new User({
+      const User = new User({
         name: "NM",
         email: "40210260@esmad.ipp.pt",
         accommodations: {
