@@ -4,14 +4,14 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 
 // Importing Routes
-const userRoutes = require("./routes/users");
-//const eventRoutes = require("./routes/event");
-const accommodationRoutes = require("./routes/accommodation");
-const reservationRoutes = require("./routes/reservation");
-const authRoutes = require("./routes/auth");
+const userRoutes = require("./routes/users.js");
+const eventRoutes = require("./routes/event.js");
+const accommodationRoutes = require("./routes/accommodation.js");
+const reservationRoutes = require("./routes/reservation.js");
+const authRoutes = require("./routes/auth.js");
 
 // Importing Model
-const User = require("./models/users");
+const User = require("./models/users.js");
 
 // Start the App
 const app = express();
@@ -21,35 +21,63 @@ app.use(cors());
 app.use(express.json());
 
 // Connecting to Mongo
-mongoose.connect("mongodb+srv://40210260:R56b6536I@cluster0.u9z6ifo.mongodb.net/?retryWrites=true&w=majority").the((result) => {
-  User.findOne().then((user) => {
-    if (!user) {
-      const User = new User({
-        name: "NM",
-        email: "40210260@esmad.ipp.pt",
-        accommodations: {
-          accommodation: [],
-        },
-        events: {
+mongoose
+  .connect(
+    "mongodb+srv://40210260:R56b6536I@cluster0.u9z6ifo.mongodb.net/?retryWrites=true&w=majority"
+  )
+  .then((result) => {
+    User.findOne().then((user) => {
+      if (user) {
+        res
+          .status(409)
+          .json({ success: false, message: "User already exists!" });
+      } else {
+        const newUser = new User({
+          name: "NM",
+          email: "40210260@esmad.ipp.pt",
+          accommodations: {
+            accommodation: [],
+          },
+          events: {
             event: [],
-        },
-        reservations: {
+          },
+          reservations: {
             reservation: [],
-        },
+          },
+        });
+        newUser.save().then((savedUser) => {
+          res
+            .status(201)
+            .json({ success: true, message: savedUser, user: savedUser });
+        });
+      }
+    });
+  })
+  .catch((err) => {
+    res
+      .status(500)
+      .json({ success: false, message: "Failed to connect to the database!" });
+  });
 
-      });
-    }
+// Implement the Routes
+app.get("/api/v1", (req, res) => {
+  res.json({
+    success: true,
+    message: "Welcome to the Students Support Rest Api!",
   });
 });
 
-// Implement the Routes
-app.use("/api/v1/users");
-app.use("/api/v1/events");
-app.use("/api/v1/accommodations");
-app.use("/api/v1/reservations");
-app.use("/api/v1/auth");
+app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/events", eventRoutes);
+app.use("/api/v1/accommodations", accommodationsRoutes);
+app.use("/api/v1/reservations", reservationRoutes);
+app.use("/api/v1/auth", authRoutes);
+
+app.use((req, res) => {
+  res.status(404).json({ success: false, message: "Route not recognized." });
+});
 
 // Start the Server Application
 const PORT = process.env.PORT || 3000;
-const HOST = process.env.HOST || "127.0.0.1"
-app.listen(port, () => console.log(`http://${HOST}:${PORT}`));
+const HOST = process.env.HOST || "127.0.0.1";
+app.listen(PORT, () => console.log(`http://${HOST}:${PORT}`));
