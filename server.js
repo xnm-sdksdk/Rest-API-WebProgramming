@@ -22,9 +22,7 @@ app.use(express.json());
 
 // Connecting to Mongo
 mongoose
-  .connect(
-    ""
-  )
+  .connect(process.env.DATABASE_URL, { useNewUrlParser: true })
   .then((result) => {
     User.findOne().then((user) => {
       if (user) {
@@ -58,6 +56,10 @@ mongoose
       .status(500)
       .json({ success: false, message: "Failed to connect to the database!" });
   });
+
+const db = mongoose.connection;
+db.on("error", (err) => console.log(error));
+db.once("open", () => console.log("Connected to the Database"));
 
 // Implement the Routes
 app.get("/api/v1", (req, res) => {
