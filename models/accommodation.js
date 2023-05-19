@@ -16,7 +16,7 @@ const accommodationSchema = new mongoose.Schema({
   },
   location: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Location',
+    ref: "Location",
     required: true,
   },
   price: {
@@ -45,6 +45,11 @@ const accommodationSchema = new mongoose.Schema({
   },
   amenities: {
     type: [String],
+    required: true,
+  },
+  facilitatorId: {
+    type: Schema.Types.ObjectId,
+    ref: "Facilitator",
     required: true,
   },
 });
