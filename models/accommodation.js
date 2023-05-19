@@ -3,10 +3,6 @@ const Schema = mongoose.Schema;
 const getDb = require("../utils/database");
 
 const accommodationSchema = new mongoose.Schema({
-  acc_id: {
-    type: Number,
-    required: true,
-  },
   title: {
     type: String,
     required: true,
@@ -34,10 +30,6 @@ const accommodationSchema = new mongoose.Schema({
   },
   room_type: {
     type: String,
-    required: true,
-  },
-  availability: {
-    type: Boolean,
     required: true,
   },
   images: {

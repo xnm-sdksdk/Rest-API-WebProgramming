@@ -1,22 +1,12 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const getDb = require("../utils/database").getDb;
+const Accommodation = require('./accommodation');
 
 const reservationSchema = new mongoose.Schema({
   accommodation_id: {
-    type: Number,
-    required: true,
-  },
-  facilitator_id: {
-    type: Number,
-    required: true,
-  },
-  reservation_id: {
-    type: Number,
-    required: true,
-  },
-  user_id: {
-    type: Number,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Accommodation',
     required: true,
   },
   check_in_date: {
@@ -28,19 +18,11 @@ const reservationSchema = new mongoose.Schema({
     required: true,
   },
   status: {
-    type: String,
+    type: Boolean,
     required: true,
   },
   number_guests: {
     type: Number,
-    required: true,
-  },
-  created: {
-    type: Date,
-    required: true,
-  },
-  updated: {
-    type: Date,
     required: true,
   },
 });
