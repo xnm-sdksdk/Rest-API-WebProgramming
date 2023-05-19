@@ -17,10 +17,10 @@ router
   .route("/api/v1/accommodations")
   .post(accommodationsController.createAccommodation);
 
-// PUT Accommodation BY ID
+// PATCH Updating Accommodation BY ID
 router
   .route("/api/v1/accommodations/:id")
-  .put(accommodationsController.updateAccommodationById);
+  .patch(accommodationsController.updateAccommodationById);
 
 // Delete Accommodation BY ID
 router

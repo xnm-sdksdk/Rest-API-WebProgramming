@@ -21,8 +21,8 @@ router.route("/api/v1/users/").get(usersController.getUsers);
 // GET User BY ID
 router.route("/api/v1/users/:id").get(usersController.getUserById);
 
-// PUT Users BY ID
-router.route("/api/v1/users/:id").put(usersController.updateUserById);
+// PATCH Users BY ID
+router.route("/api/v1/users/:id").patch(usersController.updateUserById);
 
 // DELETE Users BY ID
 router.route("/api/v1/delete/:id").delete(usersController.deleteUserById);

@@ -11,10 +11,10 @@ router.route("/api/v1/events/:id").get(eventsController.getAccommodationById);
 // POST Events
 router.route("/api/v1/events").post(eventsController.createAccommodation);
 
-// PUT Events BY ID
+// PATCH Updating Events BY ID
 router
   .route("/api/v1/events/:id")
-  .put(eventsController.updateAccommodationById);
+  .patch(eventsController.updateAccommodationById);
 
 // Delete Events BY ID
 router
