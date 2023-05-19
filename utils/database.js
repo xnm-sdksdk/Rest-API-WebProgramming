@@ -3,10 +3,10 @@ const MongoClient = mongodb.MongoClient;
 
 let db;
 
+let uri = "mongodb+srv://40210260:12345@cluster0.u9z6ifo.mongodb.net/?retryWrites=true&w=majority";
+
 const mongoConnect = (callback) => {
-  MongoClient.connect(
-    "mongodb+srv://40210260:<password>@cluster0.u9z6ifo.mongodb.net/?retryWrites=true&w=majority"
-  )
+  MongoClient.connect(uri)
     .then((client) => {
       console.log("Connected!");
       db = client.db();
