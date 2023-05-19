@@ -1,8 +1,8 @@
 const Event = require("../models/event");
-const User = require("../models/user");
+const User = require("../models/users");
 
 const EVENTS_PER_PAGE = 6;
-
+/*
 exports.getEvents = (req, res, next) => {
   const page = parseInt(req.query.page);
   const skip = (page - 1) * EVENTS_PER_PAGE;
@@ -31,7 +31,7 @@ exports.getEvents = (req, res, next) => {
       });
     });
 };
-
+*/
 exports.getEventById = (req, res, next) => {};
 
 exports.createEvent = (req, res, next) => {};

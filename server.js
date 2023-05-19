@@ -2,13 +2,13 @@ const path = require("path");
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
+require("dotenv").config();
 
 // Importing Routes
 const userRoutes = require("./routes/users.js");
 const eventRoutes = require("./routes/event.js");
 const accommodationRoutes = require("./routes/accommodation.js");
 const reservationRoutes = require("./routes/reservation.js");
-const authRoutes = require("./routes/auth.js");
 
 // Importing Model
 const User = require("./models/users.js");
@@ -21,8 +21,9 @@ app.use(cors());
 app.use(express.json());
 
 // Connecting to Mongo
+/*
 mongoose
-  .connect(process.env.DATABASE_URL, { useNewUrlParser: true })
+  .connect("mongodb+srv://40210260:R56b6536I@cluster0.u9z6ifo.mongodb.net/?retryWrites=true&w=majority", { useNewUrlParser: true })
   .then((result) => {
     User.findOne().then((user) => {
       if (user) {
@@ -56,6 +57,9 @@ mongoose
       .status(500)
       .json({ success: false, message: "Failed to connect to the database!" });
   });
+*/
+
+mongoose.connect();
 
 const db = mongoose.connection;
 db.on("error", (err) => console.log(error));
@@ -71,7 +75,7 @@ app.get("/api/v1", (req, res) => {
 
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/events", eventRoutes);
-app.use("/api/v1/accommodations", accommodationsRoutes);
+app.use("/api/v1/accommodations", accommodationRoutes);
 app.use("/api/v1/reservations", reservationRoutes);
 
 app.use((req, res) => {

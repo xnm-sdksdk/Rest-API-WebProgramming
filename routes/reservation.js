@@ -3,6 +3,7 @@ const router = express.Router();
 const reservationsController = require("../controllers/reservation");
 
 // Get ALL Reservations
+/*
 router
   .route("/api/v1/reservations")
   .get(reservationsController.getAccommodations);
@@ -28,3 +29,4 @@ router
   .delete(reservationsController.deleteAccommodationById);
 
 module.exports = router;
+*/

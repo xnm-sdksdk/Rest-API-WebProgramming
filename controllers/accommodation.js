@@ -1,5 +1,5 @@
 const Accommodation = require("../models/accommodation");
-const User = require("../models/user");
+const User = require("../models/users");
 
 const ACCOMMODATIONS_PER_PAGE = 6;
 
