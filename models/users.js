@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const getDb = require("../utils/database").getDb;
 
 const userSchema = new Schema({
   user_id: { type: String, required: true },

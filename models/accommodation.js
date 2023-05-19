@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const getDb = require("../utils/database");
 
 const accommodationSchema = new mongoose.Schema({
   acc_id: {
