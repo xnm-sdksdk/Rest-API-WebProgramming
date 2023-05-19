@@ -1,10 +1,25 @@
 const Users = require("../models/users");
 const { v4: uuidv4 } = require("uuid");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 // Create a new user
 exports.registerUser = async (req, res, next) => {
   try {
+    if (
+      !req.body &&
+      !req.body.name &&
+      !req.body.email &&
+      !req.body.password &&
+      !req.body.password_confirmation
+    ) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Fields are mandatory." });
+    }
+
+    await Users.registerUser({})
+
     const { name, email, password, password_confirmation, role } = req.body;
     const accommodations = [];
     const events = [];
