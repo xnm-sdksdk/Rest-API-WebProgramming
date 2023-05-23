@@ -24,39 +24,7 @@ app.use(express.json());
 /*
 mongoose
   .connect("mongodb+srv://40210260:R56b6536I@cluster0.u9z6ifo.mongodb.net/?retryWrites=true&w=majority", { useNewUrlParser: true })
-  .then((result) => {
-    User.findOne().then((user) => {
-      if (user) {
-        res
-          .status(409)
-          .json({ success: false, message: "User already exists!" });
-      } else {
-        const newUser = new User({
-          name: "NM",
-          email: "40210260@esmad.ipp.pt",
-          accommodations: {
-            accommodation: [],
-          },
-          events: {
-            event: [],
-          },
-          reservations: {
-            reservation: [],
-          },
-        });
-        newUser.save().then((savedUser) => {
-          res
-            .status(201)
-            .json({ success: true, message: savedUser, user: savedUser });
-        });
-      }
-    });
-  })
-  .catch((err) => {
-    res
-      .status(500)
-      .json({ success: false, message: "Failed to connect to the database!" });
-  });
+  .then()
 */
 
 mongoose.connect();
