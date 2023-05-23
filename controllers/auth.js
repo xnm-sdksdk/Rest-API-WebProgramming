@@ -33,3 +33,34 @@ exports.postSignUp = (req, res, next) => {
       });
     });
 };
+
+exports.postLogin = (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
+  User.findOne({ email: email }).then((user) => {
+    if (!user) {
+      return res
+        .status(401)
+        .json({ success: false, message: "Credentials missing or incorrect." });
+    }
+    bcrypt
+      .compare(password, user.password)
+      .then((match) => {
+        if (match) {
+          return res
+            .status(200)
+            .json({ success: true, message: "Credentials Valid." });
+        }
+        res.status(401).json({
+          success: false,
+          message: "Credentials missing or incorrect.",
+        });
+      })
+      .catch((err) =>
+        res.status(500).json({
+          success: false,
+          message: "Something went wrong. Please try again later.",
+        })
+      );
+  });
+};
