@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const getDb = require("../utils/database").getDb;
-const Accommodation = require('./accommodation');
+const Accommodation = require("./accommodation");
 
 module.exports = (mongoose) => {
   const { Schema } = mongoose;
@@ -16,7 +16,17 @@ module.exports = (mongoose) => {
         ref: "Accommodation",
       },
     ],
-    events: { type: [String] },
+    events: {
+      items: [
+        {
+          eventId: {
+            type: Schema.Types.ObjectId,
+            ref: "Event",
+            required: true,
+          },
+        },
+      ],
+    },
     date_registered: {
       type: Date,
       default: Date.now,
