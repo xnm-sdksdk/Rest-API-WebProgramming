@@ -5,27 +5,27 @@ const reservationsController = require("../controllers/reservation");
 // Get ALL Reservations
 /*
 router
-  .route("/api/v1/reservations")
+  .route("/reservations")
   .get(reservationsController.getAccommodations);
 
 // Get Reservations BY ID
 router
-  .route("/api/v1/reservations/:id")
+  .route("/reservations/:id")
   .get(reservationsController.getAccommodationById);
 
 // POST Reservations
 router
-  .route("/api/v1/reservations")
+  .route("/reservations")
   .post(reservationsController.createAccommodation);
 
 // PATCH Updating Reservations BY ID
 router
-  .route("/api/v1/reservations/:id")
+  .route("/reservations/:id")
   .patch(reservationsController.updateAccommodationById);
 
 // Delete Reservations BY ID
 router
-  .route("/api/v1/reservations/:id")
+  .route("/reservations/:id")
   .delete(reservationsController.deleteAccommodationById);
 
 module.exports = router;
