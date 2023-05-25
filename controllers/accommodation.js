@@ -1,40 +1,9 @@
 const Accommodation = require("../models/accommodation");
 const User = require("../models/users");
 
-const ACCOMMODATIONS_PER_PAGE = 6;
+exports.getAccommodations = async (req, res, next) => {};
 
-exports.getAccommodations = (req, res, next) => {
-  const page = parseInt(req.query.page);
-  const skip = (page - 1) * ACCOMMODATIONS_PER_PAGE;
-  let totalAccommodations;
-
-  Accommodation.find()
-    .count()
-    .then((numAccommodations) => {
-      totalAccommodations = numAccommodations;
-      return Accommodation.find().skip(skip).limit(ACCOMMODATIONS_PER_PAGE);
-    })
-    .then((accommodation) => {
-      res.status(200).json({
-        success: true,
-        message: accommodation,
-        total: totalAccommodations,
-        hasNextPage: ACCOMMODATIONS_PER_PAGE * page < totalAccommodations,
-        hasPreviousPage: page > 1,
-        nextPage: page + 1,
-        previousPage: page - 1,
-        lastPage: Math.ceil(totalAccommodations / ACCOMMODATIONS_PER_PAGE)
-      });
-    })
-    .catch((err) => {
-      res.status(500).json({
-        success: false,
-        message: "Something went wrong. Please try again later.",
-      });
-    });
-};
-
-exports.getAccommodationById = (req, res, next) => {
+exports.getAccommodationById = async (req, res, next) => {
   const accommodationId = req.params.id;
   Accommodation.findById(accommodationId)
     .then((accommodation) => {
@@ -43,7 +12,8 @@ exports.getAccommodationById = (req, res, next) => {
           .status(404)
           .json({ success: false, message: "Accommodation not found." });
       }
-      res.json(accommodation);
+      // then to add
+      res.status.json({});
     })
     .catch((err) => {
       res
@@ -52,7 +22,7 @@ exports.getAccommodationById = (req, res, next) => {
     });
 };
 
-exports.createAccommodation = (req, res, next) => {
+exports.createAccommodation = async (req, res, next) => {
   const title = req.body.title;
   const images = req.body.images;
   const description = req.body.description;
@@ -77,17 +47,19 @@ exports.createAccommodation = (req, res, next) => {
   accommodation
     .save()
     .then((result) => {
-      console.log("Accommodation Created");
-      res.status(201).json({ success: true, message: accommodation });
+      res.status(201).json({
+        success: true,
+        message: "Accommodation created successfully " + result,
+      });
     })
     .catch((err) => {
       res
         .status(500)
-        .json({ success: false, message: "An Internal Error occurred." });
+        .json({ success: false, message: "An Internal Error occurred." + err });
     });
 };
 
-exports.updateAccommodationById = (req, res, next) => {
+exports.updateAccommodationById = async (req, res, next) => {
   const accommodationId = req.body.accommodationId;
   const updatedTitle = req.body.title;
   const updatedDescription = req.body.description;
@@ -114,16 +86,18 @@ exports.updateAccommodationById = (req, res, next) => {
     })
     .then((result) => {
       console.log("Updated Product");
-      res.status(200).json({ success: true, message: accommodation });
+      res.status(202).json({
+        success: true,
+        message: "Accommodation updated successfully " + result,
+      });
     });
 };
 
-exports.deleteAccommodationById = (req, res, next) => {
+exports.deleteAccommodationById = async (req, res, next) => {
   const accommodationId = req.body.accommodationId;
   Accommodation.findByIdAndRemove(accommodationId)
     .then(() => {
-      console.log("Product removed.");
-      res.status(200).json({ success: true, message: "Product removed" });
+      res.status(202).json({ success: true, message: "Product removed" });
     })
     .catch((err) => {
       res
