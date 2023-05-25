@@ -39,6 +39,6 @@ module.exports = (mongoose) => {
       required: true,
     },
   });
-  const Event = mongoose.model("Event", eventSchema);
+  const Event = mongoose.model("Event", schema);
   return Event;
 };

@@ -6,7 +6,7 @@ require("dotenv").config();
 
 // Importing Routes
 const userRoutes = require("./routes/users.js");
-// const eventRoutes = require("./routes/event.js");
+const eventRoutes = require("./routes/event.js");
 // const accommodationRoutes = require("./routes/accommodation.js");
 // const reservationRoutes = require("./routes/reservation.js");
 
@@ -44,7 +44,7 @@ app.get("/api/v1", (req, res) => {
 });
 
 app.use("/api/v1/users", userRoutes);
-// app.use("/api/v1/events", eventRoutes);
+app.use("/api/v1/events", eventRoutes);
 // app.use("/api/v1/accommodations", accommodationRoutes);
 // app.use("/api/v1/reservations", reservationRoutes);
 

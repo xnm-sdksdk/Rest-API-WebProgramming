@@ -9,7 +9,7 @@ const eventsController = require("../controllers/event");
 router.route("/events/:id").get(eventsController.getEventById);
 
 // POST Events
-router.route("/events").post(eventsController.createEvent);
+router.route("/").post(eventsController.createEvent);
 
 // PATCH Updating Events BY ID
 router.route("/events/:id").patch(eventsController.updateEventById);

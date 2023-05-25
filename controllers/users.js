@@ -18,7 +18,7 @@ exports.registerUser = async (req, res) => {
     ) {
       return res
         .status(400)
-        .json({ success: false, message: "Fields are mandatory." });
+        .json({ success: false, message: "All fields are mandatory." });
     }
 
     // Needs review

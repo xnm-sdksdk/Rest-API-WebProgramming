@@ -1,6 +1,10 @@
-const Event = require("../models/event");
-const User = require("../models/users");
+// const Event = require("../models/event");
+// const User = require("../models/users");
+const db = require("../models/index");
+const Event = db.events;
+const config = require("../config/config");
 
+/*
 // Get all Events
 exports.getEvents = async (req, res, next) => {
   Event.find()
@@ -14,7 +18,7 @@ exports.getEvents = async (req, res, next) => {
       });
     });
 };
-
+*/
 // Get by ID
 exports.getEventById = async (req, res, next) => {
   try {
@@ -28,37 +32,54 @@ exports.getEventById = async (req, res, next) => {
   }
 };
 
-exports.createEvent = async (req, res, next) => {
-  const title = req.body.title;
-  const description = req.body.description;
-  const location = req.body.location;
-  const date = req.body.date;
-  const time = req.body.time;
-  const type = req.body.type;
-  const images = req.body.images;
-  const event = new Event({
-    title: title,
-    description: description,
-    location: location,
-    date: date,
-    time: time,
-    type: type,
-    images: images,
-  });
-  event
-    .save()
-    .then((result) => {
-      res.status(201).json({
-        success: true,
-        message: "Event created successfully." + result,
-      });
-    })
-    .catch((err) => {
-      res.status(500).json({
-        success: false,
-        message: "Something went wrong. Please try again later.",
-      });
+exports.createEvent = async (req, res) => {
+  try {
+    if (
+      !req.body &&
+      !req.body.title &&
+      !req.body.description &&
+      !req.body.location &&
+      !req.body.date &&
+      !req.body.time &&
+      !req.body.type &&
+      !req.body.images
+    ) {
+      return res
+        .status(400)
+        .json({ success: false, message: "All fields are mandatory" });
+    }
+
+    const { title, description, location, date, time, type} = req.body;
+    const images = []
+    const event = new Event({
+      title: title,
+      description: description,
+      location: location,
+      date: date,
+      time: time,
+      type: type,
+      images: images,
     });
+    console.log(event);
+    await event.save();
+    console.log(event);
+    const res = {
+      title: event.title,
+      description: event.description,
+      location: event.location,
+      date: event.date,
+      time: event.time,
+      type: event.type,
+      images: event.images,
+    };
+    res.status(201).json(res);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      success: false,
+      message: "Something went wrong. Please try again later.",
+    });
+  }
 };
 
 exports.updateEventById = async (req, res, next) => {
@@ -83,12 +104,10 @@ exports.updateEventById = async (req, res, next) => {
       return event.save();
     })
     .then((result) => {
-      res
-        .status(202)
-        .json({
-          success: true,
-          message: "Event updated successfully " + result,
-        });
+      res.status(202).json({
+        success: true,
+        message: "Event updated successfully " + result,
+      });
     })
     .catch((err) => {
       res.status(500).json({ success: false, message: err.message });
