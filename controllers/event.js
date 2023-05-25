@@ -32,7 +32,19 @@ exports.getEvents = (req, res, next) => {
     });
 };
 */
-exports.getEventById = (req, res, next) => {};
+exports.getEventById = async (req, res, next) => {
+  try {
+    let event = await Event.find({});
+    res.status(200).json({ success: true, message: event });
+  } catch (err) {
+    res
+      .status(500)
+      .json({
+        success: false,
+        message: "Something went wrong. Please try again later.",
+      });
+  }
+};
 
 exports.createEvent = (req, res, next) => {};
 
