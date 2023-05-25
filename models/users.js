@@ -10,6 +10,9 @@ module.exports = (mongoose) => {
     name: { type: String, required: true },
     email: { type: String, required: true },
     role: { type: String, required: true },
+    password: { type: String, required: true },
+    resetToken: String,
+    resetTokenExpiration: Date,
     accommodations: [
       {
         type: mongoose.Schema.Types.ObjectId,
