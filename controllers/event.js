@@ -48,14 +48,30 @@ exports.createEvent = async (req, res, next) => {
   event
     .save()
     .then((result) => {
-      res
-        .status(201)
-        .json({
-          success: true,
-          message: "Event created successfully." + result,
-        });
+      res.status(201).json({
+        success: true,
+        message: "Event created successfully." + result,
+      });
     })
     .catch((error) => {
+      res.status(500).json({
+        success: false,
+        message: "Something went wrong. Please try again later.",
+      });
+    });
+};
+
+exports.updateEventById = (req, res, next) => {};
+
+exports.deleteEventById = (req, res, next) => {
+  const eventId = req.params.eventId;
+  Event.findByIdAndRemove(eventId)
+    .then(() => {
+      res
+        .status(202)
+        .json({ success: true, message: "Event deleted successfully" });
+    })
+    .catch((err) => {
       res
         .status(500)
         .json({
@@ -64,7 +80,3 @@ exports.createEvent = async (req, res, next) => {
         });
     });
 };
-
-exports.updateEventById = (req, res, next) => {};
-
-exports.deleteEventById = (req, res, next) => {};
