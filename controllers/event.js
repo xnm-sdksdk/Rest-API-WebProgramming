@@ -46,7 +46,9 @@ exports.getEventById = async (req, res, next) => {
   }
 };
 
-exports.createEvent = (req, res, next) => {};
+exports.createEvent = async (req, res, next) => {
+  
+};
 
 exports.updateEventById = (req, res, next) => {};
 
