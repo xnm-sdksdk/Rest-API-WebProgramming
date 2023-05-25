@@ -1,7 +1,7 @@
 const config = {
-    USER: process.env.DB_USER || 'Students Support',
+    USER: process.env.DB_USER || '40210260',
     PASSWORD: process.env.DB_PASSWORD || "12345",
-    DB: process.env.DB || "Cluster0"
+    DB: process.env.DB || "RestApiWP"
 };
 
 config.URL = `mongodb+srv://${config.USER}:${config.PASSWORD}@cluster0.u9z6ifo.mongodb.net/${config.DB}?retryWrites=true&w=majority`

@@ -1,19 +1,20 @@
-const Users = require("../models/users");
+// const Users = require("../models/users");
 const { v4: uuidv4 } = require("uuid");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const config = require("../config/config");
-const User = db.user;
+// const User = db.user;
+const db = require("../models/index");
+const User = db.users;
 
 // Create a new user
-exports.registerUser = async (req, res, next) => {
+exports.registerUser = async (req, res) => {
   try {
     if (
       !req.body &&
       !req.body.name &&
       !req.body.email &&
-      !req.body.password &&
-      !req.body.password_confirmation
+      !req.body.password 
     ) {
       return res
         .status(400)
@@ -22,28 +23,29 @@ exports.registerUser = async (req, res, next) => {
 
     // Needs review
 
-    await Users.registerUser({
-      name: req.body.name,
-      email: req.body.email,
-      password: bcrypt.hashSync(req.body.password, 12),
-      role: req.body.role,
-    });
+    // await Users.registerUser({
+    //   name: req.body.name,
+    //   email: req.body.email,
+    //   password: bcrypt.hashSync(req.body.password, 12),
+    //   role: req.body.role || "regular",
+    // });
 
-    const { name, email, password, password_confirmation, role } = req.body;
+    const { name, email, password } = req.body;
     const accommodations = [];
     const events = [];
     const user = new User({
-      name,
-      email,
-      password,
-      password_confirmation,
-      role,
-      accommodations,
-      events,
+      name: name,
+      email: email,
+      password: password,
+      // password_confirmation,
+      role: 'regular',
+      accommodations: [],
+      events: [],
     });
+    console.log(user)
     await user.save();
-
-    const authKey = uuidv4();
+    console.log(user)
+    // const authKey = uuidv4();
 
     const response = {
       name: user.name,
@@ -51,10 +53,11 @@ exports.registerUser = async (req, res, next) => {
       role: user.role,
       accommodations: user.accommodations,
       events: user.events,
-      auth_key: authKey,
+      // auth_key: authKey,
     };
     res.status(201).json(response);
   } catch (err) {
+    console.log(err)
     res
       .status(500)
       .json({ err: "Something went wrong. Please try again later." });

@@ -4,7 +4,7 @@ const router = express.Router();
 const usersController = require("../controllers/users");
 
 // POST Register new Users
-router.route("/api/v1/users").post(usersController.registerUser);
+router.route("/").post(usersController.registerUser);
 
 // POST Login User
 router.route("/api/v1/login").post(usersController.loginUser);
