@@ -1,3 +1,4 @@
+const crypto = require("crypto");
 const bcrypt = require("bcrypt");
 const User = require("../models/users");
 
@@ -62,5 +63,36 @@ exports.postLogin = (req, res) => {
           message: "Something went wrong. Please try again later.",
         })
       );
+  });
+};
+
+exports.postReset = (req, res) => {
+  crypto.randomBytes(32, (err, buffer) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).json({
+        success: false,
+        message: "Something went wrong. Please try again later.",
+      });
+    }
+    const token = buffer.toString("hex");
+    User.findOne({ email: req.body.email })
+      .then((user) => {
+        if (!user) {
+          res.status(404).json({
+            success: false,
+            message: "No account with that email was found.",
+          });
+        }
+        user.resetToken = token;
+        user.resetTokenExpiration = Date.now() + 3600000;
+        return user.save();
+      })
+      .then((result) => {
+        // Send the Token reset email for the user
+        // Need to implement the transporter | nodemailer was not working
+        // Place the token in the res message 
+      })
+      .catch((err) => {});
   });
 };
