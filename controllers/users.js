@@ -10,12 +10,7 @@ const User = db.users;
 // Create a new user
 exports.registerUser = async (req, res) => {
   try {
-    if (
-      !req.body &&
-      !req.body.name &&
-      !req.body.email &&
-      !req.body.password 
-    ) {
+    if (!req.body && !req.body.name && !req.body.email && !req.body.password) {
       return res
         .status(400)
         .json({ success: false, message: "All fields are mandatory." });
@@ -38,13 +33,13 @@ exports.registerUser = async (req, res) => {
       email: email,
       password: password,
       // password_confirmation,
-      role: 'regular',
+      role: "regular",
       accommodations: [],
       events: [],
     });
-    console.log(user)
+    console.log(user);
     await user.save();
-    console.log(user)
+    console.log(user);
     // const authKey = uuidv4();
 
     const response = {
@@ -57,7 +52,7 @@ exports.registerUser = async (req, res) => {
     };
     res.status(201).json(response);
   } catch (err) {
-    console.log(err)
+    console.log(err);
     res
       .status(500)
       .json({ err: "Something went wrong. Please try again later." });
@@ -68,20 +63,22 @@ exports.registerUser = async (req, res) => {
 exports.loginUser = async (req, res, next) => {
   try {
     if (!req.body || !req.body.name || !req.body.password) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "Name and password must be provided.",
-        });
+      return res.status(400).json({
+        success: false,
+        message: "Name and password must be provided.",
+      });
     }
 
     // Verification for the name
     let user = await Users.findOne({ where: { name: req.body.name } });
-    if (!user) return res.status(404).json({ success: false, message: "User with the given name not found."});
+    if (!user)
+      return res
+        .status(404)
+        .json({
+          success: false,
+          message: "User with the given name not found.",
+        });
 
-
-    
     const { email, password } = req.body;
     if (!user) {
       res.status(404).json({ err: "Account does not exist." });

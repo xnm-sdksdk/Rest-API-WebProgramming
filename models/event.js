@@ -7,15 +7,14 @@ module.exports = (mongoose) => {
   const schema = mongoose.Schema({
     title: {
       type: String,
-      // required: true,
+      //required: true,
     },
     description: {
       type: String,
       // required: true,
     },
     location: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Location",
+      type: String,
       // required: true,
     },
     date: {
@@ -35,7 +34,7 @@ module.exports = (mongoose) => {
       // required: true,
     },
     participants: {
-      type: mongoose.Schema.Types.ObjectId
+      type: String,
     },
   });
   const Event = mongoose.model("Event", schema);

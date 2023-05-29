@@ -50,37 +50,36 @@ exports.createEvent = async (req, res) => {
     }
 
     //  description, location, date, time, type
-    const { title } = req.body;
-    // const images = [];
+    const { title, description, location, date, time, type } = req.body;
+    const images = [];
     // const participants = [];
     const event = new Event({
       title: title,
-      // description: description,
-      // location: location,
-      // date: date,
-      // time: time,
-      // type: type,
-      // images: [],
-      // participants: [],
+      description: description,
+      location: location,
+      date: date,
+      time: time,
+      type: type,
+      images: [],
+      participants: [],
     });
-    console.log(event);
+    console.log(event + "First Log");
     await event.save();
-    console.log(event);
-    const res = {
+    console.log(event + "Second Log");
+    const response = {
       title: event.title,
-      // description: event.description,
-      // location: event.location,
-      // date: event.date,
-      // time: event.time,
-      // type: event.type,
-      // images: event.images,
+      description: event.description,
+      location: event.location,
+      date: event.date,
+      time: event.time,
+      type: event.type,
+      images: event.images,
     };
-    res.status(201).json(res);
+    res.status(201).json(response);
   } catch (err) {
     console.log(err);
     res.status(500).json({
-      success: false,
-      message: "Something went wrong. Please try again later.",
+      err: "Something went wrong. Please try again later.",
     });
   }
 };
