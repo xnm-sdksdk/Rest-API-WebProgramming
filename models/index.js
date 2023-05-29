@@ -30,5 +30,7 @@ db.url = dbConfig.URL;
 })();
 
 db.users = require("./users.js")(mongoose);
+db.events = require("./event.js")(mongoose);
+//db.accommodations = require("./accommodation.js")(mongoose)
 
 module.exports = db;
