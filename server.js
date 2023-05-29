@@ -36,7 +36,7 @@ mongoose
 // db.once("open", () => console.log("Connected to the Database"));
 
 // Implement the Routes
-app.get("/api/v1", (req, res) => {
+app.get("/api/v1/", (req, res) => {
   res.json({
     success: true,
     message: "Welcome to the Students Support Rest Api!",

@@ -9,9 +9,6 @@ router.route("/").post(usersController.registerUser);
 // POST Login User
 router.route("/login").post(usersController.loginUser);
 
-// POST Logout User
-router.route("/logout").post(usersController.logoutUser);
-
 // PUT Refresh auth token
 router.route("/refresh-token").put(usersController.refreshToken);
 

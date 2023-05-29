@@ -70,28 +70,20 @@ exports.loginUser = async (req, res, next) => {
     }
 
     // Verification for the name
-    let user = await Users.findOne({ where: { name: req.body.name } });
+    let user = await User.findOne({ where: { name: req.body.name } });
     if (!user)
-      return res
-        .status(404)
-        .json({
-          success: false,
-          message: "User with the given name not found.",
-        });
+      return res.status(404).json({
+        success: false,
+        message: "User with the given name not found.",
+      });
 
-    const { email, password } = req.body;
-    if (!user) {
-      res.status(404).json({ err: "Account does not exist." });
-      return;
-    }
+    const isValidPassword = bcrypt.compareSync(req.body.password, user.password);
 
-    const isValidPassword = await user.comparePassword(password);
     if (!isValidPassword) {
       res.status(401).json({ err: "Incorrect password." });
-      return;
     }
 
-    const token = jwt.sign({ userId: user._id }, "key", { expiresIn: "1h" });
+    //const token = jwt.sign({ userId: user._id }, "key", { expiresIn: "1h" });
 
     const response = {
       userId: user._id,
@@ -101,15 +93,13 @@ exports.loginUser = async (req, res, next) => {
       token,
     };
 
-    res.json(response);
+    return res.status(200).json(response);
   } catch (err) {
     res
       .status(500)
       .json({ err: "Something went wrong. Please try again later." });
   }
 };
-
-exports.logoutUser = (req, res, next) => {};
 
 exports.refreshToken = (req, res, next) => {};
 
