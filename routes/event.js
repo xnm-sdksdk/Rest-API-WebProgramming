@@ -3,7 +3,7 @@ const router = express.Router();
 const eventsController = require("../controllers/event");
 
 // Get ALL Events
-//router.route("/events").get(eventsController.getEvents);
+router.route("/events").get(eventsController.getEvents);
 
 // Get Events BY ID
 router.route("/events/:id").get(eventsController.getEventById);

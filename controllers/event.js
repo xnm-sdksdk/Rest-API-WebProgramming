@@ -4,10 +4,10 @@ const db = require("../models/index");
 const Event = db.events;
 const config = require("../config/config");
 
-/*
+
 // Get all Events
 exports.getEvents = async (req, res, next) => {
-  Event.find()
+  Event.findAll()
     .then((events) => {
       res.status(200).json({ success: true, message: events });
     })
@@ -18,7 +18,7 @@ exports.getEvents = async (req, res, next) => {
       });
     });
 };
-*/
+
 // Get by ID
 exports.getEventById = async (req, res, next) => {
   try {
