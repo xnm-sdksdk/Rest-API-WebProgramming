@@ -119,8 +119,8 @@ exports.refreshToken = (req, res, next) => {};
 // Get All
 exports.getUsers = async (req, res, next) => {
   try {
-    const users = await User.find();
-    res.json(users);
+    const users = await User.findAll();
+    res.status(200).json(users);
   } catch (err) {
     res.status(500).json({ err: "Users not found!" });
   }
