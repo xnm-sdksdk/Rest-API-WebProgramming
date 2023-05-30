@@ -62,7 +62,14 @@ exports.registerUser = async (req, res) => {
 // Login
 exports.loginUser = async (req, res, next) => {
   try {
-    if (!req.body || !req.body.name || !req.body.password) {
+    let user = await User.findOne({ where: { email: req.body.email } });
+    if (!user)
+      return res.status(404).json({
+        success: false,
+        message: "User with the given email not found.",
+      });
+
+    if (!req.body || !req.body.email || !req.body.password) {
       return res.status(400).json({
         success: false,
         message: "Name and password must be provided.",
@@ -70,20 +77,17 @@ exports.loginUser = async (req, res, next) => {
     }
 
     // Verification for the name
-    let user = await User.findOne({ where: { name: req.body.name } });
-    if (!user)
-      return res.status(404).json({
-        success: false,
-        message: "User with the given name not found.",
-      });
 
-    const isValidPassword = bcrypt.compareSync(req.body.password, user.password);
+    const isValidPassword = bcrypt.compareSync(
+      req.body.password,
+      user.password
+    );
 
     if (!isValidPassword) {
       res.status(401).json({ err: "Incorrect password." });
     }
 
-    //const token = jwt.sign({ userId: user._id }, "key", { expiresIn: "1h" });
+    //const token = jwt.sign({ userId: user._id }, "key", { expiresIn: 8600 });
 
     const response = {
       userId: user._id,

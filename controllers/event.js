@@ -4,7 +4,6 @@ const db = require("../models/index");
 const Event = db.events;
 const config = require("../config/config");
 
-
 // Get all Events
 exports.getEvents = async (req, res, next) => {
   Event.findAll()
@@ -22,8 +21,13 @@ exports.getEvents = async (req, res, next) => {
 // Get by ID
 exports.getEventById = async (req, res, next) => {
   try {
-    let event = await Event.find({});
+    let event = await Event.findById(req.params.id);
+    if (!event) {
+      res.status(404).json({ success: false, message: "Event not found." });
+    }
+
     res.status(200).json({ success: true, message: event });
+    
   } catch (err) {
     res.status(500).json({
       success: false,
