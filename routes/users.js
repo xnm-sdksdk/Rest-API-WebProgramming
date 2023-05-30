@@ -1,7 +1,8 @@
 const express = require("express");
-const path = require("path");
 const router = express.Router();
+//const { check } = require("express-validator/check");
 const usersController = require("../controllers/users");
+
 
 // POST Register new Users
 router.route("/").post(usersController.registerUser);
