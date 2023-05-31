@@ -9,8 +9,6 @@ module.exports = (mongoose) => {
     email: { type: String, required: true },
     role: { type: Number, default: 1, required: false },
     password: { type: String, required: true },
-    resetToken: String,
-    resetTokenExpiration: Date,
     accommodations: [
       {
         type: mongoose.Schema.Types.ObjectId,
