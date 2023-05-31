@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const eventsController = require("../controllers/event");
+const auth = require("../controllers/auth")
 
 // Get ALL Events
 router.route("/").get(eventsController.getEvents);
@@ -9,12 +10,12 @@ router.route("/").get(eventsController.getEvents);
 router.route("/:id").get(eventsController.getEventById);
 
 // POST Events
-router.route("/").post(eventsController.createEvent);
+router.route("/").post(auth.verifyToken, eventsController.createEvent);
 
-// PATCH Updating Events BY ID
-router.route("/:id").patch(eventsController.updateEventById);
+// PUT Updating Events BY ID
+router.route("/:id").put(auth.verifyToken, eventsController.updateEventById);
 
 // Delete Events BY ID
-router.route("/:id").delete(eventsController.deleteEventById);
+router.route("/:id").delete(auth.verifyToken, eventsController.deleteEventById);
 
 module.exports = router;
