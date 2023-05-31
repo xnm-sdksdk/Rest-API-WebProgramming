@@ -29,7 +29,7 @@ exports.registerUser = async (req, res) => {
       name: name,
       email: email,
       password: bcrypt.hashSync(req.body.password, 8),
-      role: "regular",
+      role: 1,
       accommodations: accommodations,
       events: events,
     });
@@ -85,7 +85,6 @@ exports.loginUser = async (req, res, next) => {
 
     const response = {
       userId: user._id,
-      name: user.name,
       email: user.email,
       role: user.role,
       token,
