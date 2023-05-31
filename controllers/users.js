@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const db = require("../models/index");
 const User = db.users;
 const config = require("../config/config");
+require("dotenv").config();
 
 // Create a new user
 exports.registerUser = async (req, res) => {
@@ -56,7 +57,8 @@ exports.registerUser = async (req, res) => {
 // Login
 exports.loginUser = async (req, res, next) => {
   try {
-    let user = await User.findOne({ where: { email: req.body.email } });
+    let user = await User.findOne({ email: req.body.email });
+    console.log(user);
     if (!user)
       return res.status(404).json({
         success: false,
@@ -70,8 +72,6 @@ exports.loginUser = async (req, res, next) => {
       });
     }
 
-    // Verification for the name
-
     const isValidPassword = bcrypt.compareSync(
       req.body.password,
       user.password
@@ -83,18 +83,22 @@ exports.loginUser = async (req, res, next) => {
 
     //const token = jwt.sign({ userId: user._id }, "key", { expiresIn: 8600 });
 
+    const token = jwt.sign({ id: user.id, role: user.role }, config.SECRET, {
+      expiresIn: "1h",
+    });
     const response = {
       userId: user._id,
       email: user.email,
       role: user.role,
-      token,
+      // token,
     };
 
-    return res.status(200).json(response);
+    res.status(200).json(response);
   } catch (err) {
-    res
-      .status(500)
-      .json({ err: "Something went wrong. Please try again later." });
+    console.log(err);
+    // res
+    //   .status(500)
+    //   .json({ err: "Something went wrong. Please try again later." });
   }
 };
 
