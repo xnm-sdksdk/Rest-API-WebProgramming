@@ -3,7 +3,6 @@ const bcrypt = require("bcrypt");
 const db = require("../models/index");
 const User = db.users;
 const config = require("../config/config");
-require("dotenv").config();
 
 // Create a new user
 exports.registerUser = async (req, res) => {
@@ -83,14 +82,14 @@ exports.loginUser = async (req, res, next) => {
 
     //const token = jwt.sign({ userId: user._id }, "key", { expiresIn: 8600 });
 
-    const token = jwt.sign({ id: user.id, role: user.role }, config.SECRET, {
-      expiresIn: "1h",
+    const token = jwt.sign({ id: user.id, role: user.role }, process.env.SECRET, {
+      expiresIn: 3600,
     });
     const response = {
       userId: user._id,
       email: user.email,
       role: user.role,
-      // token,
+      accessToken: token,
     };
 
     res.status(200).json(response);
