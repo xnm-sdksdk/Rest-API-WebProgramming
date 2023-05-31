@@ -56,40 +56,39 @@ exports.createEvent = async (req, res) => {
         success: true,
         message: `Event ${req.body.title} created successfully`,
       });
+      const { title, description, location, date, time, type } = req.body;
+      const images = [];
+      // const participants = [];
+      const event = new Event({
+        title: title,
+        description: description,
+        location: location,
+        date: date,
+        time: time,
+        type: type,
+        images: [],
+        participants: [],
+      });
+      console.log(event + "First Log");
+      await event.save();
+      console.log(event + "Second Log");
+      const response = {
+        title: event.title,
+        description: event.description,
+        location: event.location,
+        date: event.date,
+        time: event.time,
+        type: event.type,
+        images: event.images,
+      };
+      res.status(201).json(response);
     } else {
       res.status(403).json({ success: false, message: "Permission denied." });
     }
 
-    //  description, location, date, time, type
-    const { title, description, location, date, time, type } = req.body;
-    const images = [];
-    // const participants = [];
-    const event = new Event({
-      title: title,
-      description: description,
-      location: location,
-      date: date,
-      time: time,
-      type: type,
-      images: [],
-      participants: [],
-    });
-    console.log(event + "First Log");
-    await event.save();
-    console.log(event + "Second Log");
-    const response = {
-      title: event.title,
-      description: event.description,
-      location: event.location,
-      date: event.date,
-      time: event.time,
-      type: event.type,
-      images: event.images,
-    };
-    res.status(201).json(response);
   } catch (err) {
     res.status(500).json({
-      err: "Something went wrong. Please try again later.",
+      err: "Something went wrong. Please try again later."
     });
   }
 };
