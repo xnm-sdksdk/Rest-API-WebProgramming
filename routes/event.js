@@ -3,18 +3,18 @@ const router = express.Router();
 const eventsController = require("../controllers/event");
 
 // Get ALL Events
-router.route("/events").get(eventsController.getEvents);
+router.route("/").get(eventsController.getEvents);
 
 // Get Events BY ID
-router.route("/events/:id").get(eventsController.getEventById);
+router.route("/:id").get(eventsController.getEventById);
 
 // POST Events
 router.route("/").post(eventsController.createEvent);
 
 // PATCH Updating Events BY ID
-router.route("/events/:id").patch(eventsController.updateEventById);
+router.route("/:id").patch(eventsController.updateEventById);
 
 // Delete Events BY ID
-router.route("/events/:id").delete(eventsController.deleteEventById);
+router.route("/:id").delete(eventsController.deleteEventById);
 
 module.exports = router;

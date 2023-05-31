@@ -3,26 +3,26 @@ const router = express.Router();
 const accommodationsController = require("../controllers/accommodation");
 
 // Get ALL Accommodations
-router.route("/accommodations").get(accommodationsController.getAccommodations);
+router.route("/").get(accommodationsController.getAccommodations);
 
 // Get Accommodation BY ID
 router
-  .route("/accommodations/:id")
+  .route("/:id")
   .get(accommodationsController.getAccommodationById);
 
 // POST Accommodation
 router
-  .route("/accommodations")
+  .route("/")
   .post(accommodationsController.createAccommodation);
 
 // PATCH Updating Accommodation BY ID
 router
-  .route("/accommodations/:id")
+  .route("/:id")
   .patch(accommodationsController.updateAccommodationById);
 
 // Delete Accommodation BY ID
 router
-  .route("/accommodations/:id")
+  .route("/:id")
   .delete(accommodationsController.deleteAccommodationById);
 
 module.exports = router;
