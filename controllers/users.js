@@ -104,7 +104,7 @@ exports.refreshToken = (req, res, next) => {};
 // Get All
 exports.getUsers = async (req, res, next) => {
   try {
-    const users = await User.findAll();
+    const users = await User.find();
     res.status(200).json(users);
   } catch (err) {
     res.status(500).json({ err: "Users not found!" });
@@ -116,7 +116,9 @@ exports.getUserById = (req, res, next) => {};
 
 exports.updateUserById = (req, res, next) => {};
 
-exports.deleteUserById = (req, res, next) => {};
+exports.deleteUserById = (req, res, next) => {
+  // User.update(req.body, {where: {id: req.params.id, deleted: 0}}).then(())
+};
 
 exports.addInterest = (req, res, next) => {};
 

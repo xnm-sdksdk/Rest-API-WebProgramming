@@ -6,16 +6,14 @@ const config = require("../config/config");
 
 // Get all Events
 exports.getEvents = async (req, res, next) => {
-  Event.findAll()
-    .then((events) => {
-      res.status(200).json({ success: true, message: events });
-    })
-    .catch((err) => {
-      res.status(500).json({
-        success: false,
-        message: "Something went wrong. Please try again later.",
-      });
+  try {
+    Event.find().then((events) => {
+      console.log(events);
+      res.status(200).json({ success: false, message: events });
     });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
 };
 
 // Get by ID
@@ -27,7 +25,6 @@ exports.getEventById = async (req, res, next) => {
     }
 
     res.status(200).json({ success: true, message: event });
-    
   } catch (err) {
     res.status(500).json({
       success: false,
