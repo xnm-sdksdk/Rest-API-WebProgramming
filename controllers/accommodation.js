@@ -1,7 +1,14 @@
-const Accommodation = require("../models/accommodation");
 const User = require("../models/users");
+const db = require("../models/index");
+const Accommodation = db.accommodations;
 
-exports.getAccommodations = async (req, res, next) => {};
+exports.getAccommodations = async (req, res, next) => {
+  try {
+    Accommodation
+  } catch (err) {
+    
+  }
+};
 
 exports.getAccommodationById = async (req, res, next) => {
   const accommodationId = req.params.id;
