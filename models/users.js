@@ -7,7 +7,7 @@ module.exports = (mongoose) => {
   const schema = mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true },
-    role: { type: Number, default: 1 },
+    role: { type: Number, default: 1, required: false },
     password: { type: String, required: true },
     resetToken: String,
     resetTokenExpiration: Date,

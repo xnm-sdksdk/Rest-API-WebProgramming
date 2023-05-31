@@ -13,8 +13,7 @@ module.exports = (mongoose) => {
       // required: true,
     },
     location: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Location",
+      type: String,
       // required: true,
     },
     price: {
