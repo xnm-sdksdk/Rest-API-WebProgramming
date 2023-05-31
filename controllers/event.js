@@ -50,6 +50,16 @@ exports.createEvent = async (req, res) => {
         .json({ success: false, message: "All fields are mandatory" });
     }
 
+    if (req.loggedUser.role != 1) {
+      await Event.create(req.body);
+      res.status(201).json({
+        success: true,
+        message: `Event ${req.body.title} created successfully`,
+      });
+    } else {
+      res.status(403).json({ success: false, message: "Permission denied." });
+    }
+
     //  description, location, date, time, type
     const { title, description, location, date, time, type } = req.body;
     const images = [];

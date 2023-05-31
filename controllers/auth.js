@@ -8,12 +8,12 @@ exports.verifyToken = (req, res, next) => {
   if (typeof header == "undefined")
     return res.status(401).json({ success: false, msg: "No token provided!" });
   try {
-    let decoded = jwt.verify(header, config.SECRET);
+    let decoded = jwt.verify(header, process.env.SECRET);
     req.loggedUser = { id: decoded.id, role: decoded.role };
     next();
   } catch (err) {
     console.log(err);
-    return res.status(401).json({ message: `Bad token auth` });
+    return res.status(401).json({ message: "Bad token authentication" });
   }
 };
 
