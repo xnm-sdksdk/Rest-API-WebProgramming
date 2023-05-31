@@ -88,7 +88,6 @@ exports.createEvent = async (req, res) => {
     };
     res.status(201).json(response);
   } catch (err) {
-    console.log(err);
     res.status(500).json({
       err: "Something went wrong. Please try again later.",
     });
