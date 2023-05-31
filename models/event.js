@@ -34,7 +34,7 @@ module.exports = (mongoose) => {
       // required: true,
     },
     participants: {
-      type: String,
+      type: [String],
     },
   });
   const Event = mongoose.model("Event", schema);
