@@ -4,9 +4,12 @@ const Accommodation = db.accommodations;
 
 exports.getAccommodations = async (req, res, next) => {
   try {
-    Accommodation
+    Accommodation.find().then((accommodations) => {
+      console.log(accommodations);
+      res.status(200).json({ success: false, message: accommodations });
+    });
   } catch (err) {
-    
+    res.status(500).json({ success: false, message: err.message });
   }
 };
 
@@ -30,6 +33,53 @@ exports.getAccommodationById = async (req, res, next) => {
 };
 
 exports.createAccommodation = async (req, res, next) => {
+  try {
+    if (!req.body && !req.body.title) {
+      return res
+        .status(404)
+        .json({ success: false, message: "All fields are mandatory" });
+    }
+
+    const {
+      title,
+      description,
+      location,
+      price,
+      rating,
+      number_beds,
+      room_type,
+      amenities,
+    } = req.body;
+    images = [];
+    const accommodation = new Accommodation({
+      title: title,
+      description: description,
+      location: location,
+      price: price,
+      rating: rating,
+      number_beds: number_beds,
+      room_type: room_type,
+      amenities: amenities,
+    });
+    console.log(accommodation);
+    await accommodation.save();
+
+    const response = {
+      title: accommodation.title,
+      description: accommodation.description,
+      location: accommodation.location,
+      price: accommodation.price,
+      rating: accommodation.rating,
+      number_beds: accommodation.number_beds,
+      room_type: accommodation.room_type,
+      amenities: accommodation.amenities,
+    };
+    res.status(201).json({ response });
+  } catch (error) {
+    console.log(err);
+    res.status(500).json({ err });
+  }
+
   const title = req.body.title;
   const images = req.body.images;
   const description = req.body.description;
