@@ -1,6 +1,22 @@
 const crypto = require("crypto");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const User = require("../models/users");
+
+exports.verifyToken = (req, res, next) => {
+  // search token in headers most commonly used for authorization
+  const header = req.headers["x-access-token"] || req.headers.authorization;
+  if (typeof header == "undefined")
+    return res.status(401).json({ success: false, msg: "No token provided!" });
+  try {
+    let decoded = jwt.verify(header, config.SECRET);
+    req.loggedUser = { id: decoded.id, admin: decoded.admin }; // save user ID and role into request object
+    next();
+  } catch (err) {
+    console.log(err);
+    return res.status(401).json({ message: `Bad token auth` });
+  }
+};
 
 exports.postSignUp = (req, res, next) => {
   const email = req.body.email;
@@ -91,7 +107,7 @@ exports.postReset = (req, res) => {
       .then((result) => {
         // Send the Token reset email for the user
         // Need to implement the transporter | nodemailer was not working
-        // Place the token in the res message 
+        // Place the token in the res message
       })
       .catch((err) => {});
   });
