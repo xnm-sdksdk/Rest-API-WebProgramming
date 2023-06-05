@@ -1,7 +1,6 @@
 const path = require("path");
 const express = require("express");
 const cors = require("cors");
-// const mongoose = require("mongoose");
 require("dotenv").config();
 
 // Importing Routes
@@ -19,21 +18,6 @@ const app = express();
 // Setup Middleware
 app.use(cors());
 app.use(express.json());
-
-// Connecting to Mongo
-/*
-mongoose
-  .connect("mongodb+srv://40210260:R56b6536I@cluster0.u9z6ifo.mongodb.net/?retryWrites=true&w=majority", { useNewUrlParser: true })
-  .then()
-*/
-
-// mongoose.connect();
-
-
-
-// const db = mongoose.connection;
-// db.on("error", (err) => console.log(error));
-// db.once("open", () => console.log("Connected to the Database"));
 
 // Implement the Routes
 app.get("/api/v1/", (req, res) => {
