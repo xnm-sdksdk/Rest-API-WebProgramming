@@ -117,17 +117,25 @@ exports.updateEventById = async (req, res, next) => {
 
 // Delete Event by ID
 exports.deleteEventById = async (req, res, next) => {
-  const eventId = req.params.eventId;
-  Event.findByIdAndRemove(eventId)
-    .then(() => {
-      res
-        .status(202)
-        .json({ success: true, message: "Event deleted successfully." });
-    })
-    .catch((err) => {
-      res.status(500).json({
+  try {
+    console.log(req.params.id);
+    const event = await Event.findByIdAndRemove(req.params.id);
+    console.log(id);
+    if (!event) {
+      return res.status(404).json({
         success: false,
-        message: err.message,
+        message: "Event not found.",
       });
+    }
+
+    res.status(202).json({
+      success: true,
+      message: "Event deleted successfully.",
     });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
 };
