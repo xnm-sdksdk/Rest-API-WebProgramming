@@ -33,15 +33,6 @@ exports.getEventById = async (req, res, next) => {
   }
 };
 
-/*
-!req.body.description &&
-      !req.body.location &&
-      !req.body.date &&
-      !req.body.time &&
-      !req.body.type &&
-      !req.body.images
-      */
-
 exports.createEvent = async (req, res) => {
   try {
     if (!req.body && !req.body.title) {
@@ -85,10 +76,9 @@ exports.createEvent = async (req, res) => {
     } else {
       res.status(403).json({ success: false, message: "Permission denied." });
     }
-
   } catch (err) {
     res.status(500).json({
-      err: "Something went wrong. Please try again later."
+      err: "Something went wrong. Please try again later.",
     });
   }
 };

@@ -82,16 +82,22 @@ exports.loginUser = async (req, res, next) => {
 
     //const token = jwt.sign({ userId: user._id }, "key", { expiresIn: 8600 });
 
-    const token = jwt.sign({ id: user.id, role: user.role }, process.env.SECRET, {
-      expiresIn: 3600,
-    });
+    const token = jwt.sign(
+      { id: user.id, role: user.role },
+      process.env.SECRET,
+      {
+        expiresIn: 3600,
+      }
+    );
     const response = {
       userId: user._id,
       email: user.email,
       role: user.role,
     };
 
-    res.status(200).json({ success: true, message: response, accessToken: token });
+    res
+      .status(200)
+      .json({ success: true, message: response, accessToken: token });
   } catch (err) {
     console.log(err);
     // res
@@ -113,7 +119,28 @@ exports.getUsers = async (req, res, next) => {
 };
 
 // Get single user
-exports.getUserById = (req, res, next) => {};
+exports.getUserById = async (req, res, next) => {
+  const userId = req.params.userId;
+  try {
+    const user = await User.findById(userId)
+      .populate("accommodations")
+      .populate("events.items.eventId");
+    console.log(user);
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found!" });
+    }
+
+    res.status(200).json({ user });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Something went wrong. Please try again later.",
+    });
+  }
+};
 
 exports.updateUserById = (req, res, next) => {};
 
