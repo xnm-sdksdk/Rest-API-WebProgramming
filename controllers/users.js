@@ -9,23 +9,33 @@ exports.registerUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    if (!req.body && !req.body.email && !req.body.password) {
+    if (!name || !email || !password) {
       return res
         .status(400)
         .json({ success: false, message: "All fields are mandatory." });
     }
 
-    const user = await User.findOne({ where: { email: email } });
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({
+        success: false,
+        message: "Email format invalid.",
+      });
+    }
+
+    const user = await User.findOne({ email });
+
     if (user) {
       return res.status(400).json({
         success: false,
-        message: "Email insert is already being used.",
+        message: "Email is already being used.",
       });
     }
 
     const accommodations = [];
     const events = [];
-    user = new User({
+    const newUser = new User({
       name: name,
       email: email,
       password: bcrypt.hashSync(req.body.password, 8),
@@ -33,16 +43,15 @@ exports.registerUser = async (req, res) => {
       accommodations: accommodations,
       events: events,
     });
-    console.log(user);
-    await user.save();
-    console.log(user);
+    const savedUser = await newUser.save();
+    console.log(savedUser);
 
     const response = {
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      accommodations: user.accommodations,
-      events: user.events,
+      name: savedUser.name,
+      email: savedUser.email,
+      role: savedUser.role,
+      accommodations: savedUser.accommodations,
+      events: savedUser.events,
     };
     res.status(201).json(response);
   } catch (err) {
