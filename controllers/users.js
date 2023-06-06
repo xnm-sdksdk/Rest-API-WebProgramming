@@ -7,8 +7,15 @@ const config = require("../config/config");
 // Create a new user
 exports.registerUser = async (req, res) => {
   try {
-    let user = await User.findOne({ where: { email: req.body.email } });
+    const { name, email, password } = req.body;
 
+    if (!req.body && !req.body.email && !req.body.password) {
+      return res
+        .status(400)
+        .json({ success: false, message: "All fields are mandatory." });
+    }
+
+    const user = await User.findOne({ where: { email: email } });
     if (user) {
       return res.status(400).json({
         success: false,
@@ -16,13 +23,6 @@ exports.registerUser = async (req, res) => {
       });
     }
 
-    // if (!req.body && !req.body.email && !req.body.password) {
-    //   return res
-    //     .status(400)
-    //     .json({ success: false, message: "All fields are mandatory." });
-    // }
-
-    const { name, email, password } = req.body;
     const accommodations = [];
     const events = [];
     user = new User({
@@ -120,9 +120,9 @@ exports.getUsers = async (req, res, next) => {
 
 // Get single user
 exports.getUserById = async (req, res, next) => {
-  const userId = req.params.userId;
+  const user = req.params.userId;
   try {
-    const user = await User.findById(userId)
+    const user = await User.findById(user)
       .populate("accommodations")
       .populate("events.items.eventId");
     console.log(user);
@@ -137,15 +137,32 @@ exports.getUserById = async (req, res, next) => {
   } catch (err) {
     res.status(500).json({
       success: false,
-      message: "Something went wrong. Please try again later.",
+      message: err.message || "Something went wrong. Please try again later.",
     });
   }
 };
 
 exports.updateUserById = (req, res, next) => {};
 
-exports.deleteUserById = (req, res, next) => {
-  // User.update(req.body, {where: {id: req.params.id, deleted: 0}}).then(())
+exports.deleteUserById = async (req, res, next) => {
+  try {
+    /*
+    Verification for Admin
+    */
+
+    const user = await User.findByIdAndDelete(req.params._id);
+    console.log(user);
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found!" });
+    }
+    res
+      .status(202)
+      .json({ success: true, message: "User deleted successfully." });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
 };
 
 exports.addInterest = (req, res, next) => {};

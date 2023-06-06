@@ -23,7 +23,7 @@ router.route("/:id").get(usersController.getUserById);
 router.route("/:id").patch(usersController.updateUserById);
 
 // DELETE Users BY ID
-router.route("/delete/:id").delete(usersController.deleteUserById);
+router.route("/:id").delete(usersController.deleteUserById);
 
 // POST Show interest in an Event
 router
