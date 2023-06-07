@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const eventsController = require("../controllers/event");
-const auth = require("../controllers/auth")
+const auth = require("../controllers/auth");
 
 // Get ALL Events
 router.route("/").get(eventsController.getEvents);

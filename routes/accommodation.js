@@ -6,23 +6,15 @@ const accommodationsController = require("../controllers/accommodation");
 router.route("/").get(accommodationsController.getAccommodations);
 
 // Get Accommodation BY ID
-router
-  .route("/:id")
-  .get(accommodationsController.getAccommodationById);
+router.route("/:id").get(accommodationsController.getAccommodationById);
 
 // POST Accommodation
-router
-  .route("/")
-  .post(accommodationsController.createAccommodation);
+router.route("/").post(accommodationsController.createAccommodation);
 
 // PATCH Updating Accommodation BY ID
-router
-  .route("/:id")
-  .patch(accommodationsController.updateAccommodationById);
+router.route("/:id").patch(accommodationsController.updateAccommodationById);
 
 // Delete Accommodation BY ID
-router
-  .route("/:id")
-  .delete(accommodationsController.deleteAccommodationById);
+router.route("/:id").delete(accommodationsController.deleteAccommodationById);
 
 module.exports = router;

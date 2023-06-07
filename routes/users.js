@@ -3,7 +3,6 @@ const router = express.Router();
 //const { check } = require("express-validator/check");
 const usersController = require("../controllers/users");
 
-
 // POST Register new Users
 router.route("/").post(usersController.registerUser);
 
@@ -19,16 +18,14 @@ router.route("/").get(usersController.getUsers);
 // GET User BY ID
 router.route("/:id").get(usersController.getUserById);
 
-// PATCH Users BY ID
-router.route("/:id").patch(usersController.updateUserById);
+// PUT Users BY ID
+router.route("/:id").put(usersController.updateUserById);
 
 // DELETE Users BY ID
 router.route("/:id").delete(usersController.deleteUserById);
 
 // POST Show interest in an Event
-router
-  .route("/:userId/interests/:eventId")
-  .post(usersController.addInterest);
+router.route("/:userId/interests/:eventId").post(usersController.addInterest);
 
 // DELETE Remove interest in an Event
 router
