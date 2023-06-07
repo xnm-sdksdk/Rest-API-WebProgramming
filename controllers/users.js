@@ -129,12 +129,10 @@ exports.getUsers = async (req, res, next) => {
 
 // Get single user
 exports.getUserById = async (req, res, next) => {
-  const user = req.params.userId;
   try {
-    const user = await User.findById(user)
+    const user = await User.findById(req.params.id)
       .populate("accommodations")
       .populate("events.items.eventId");
-    console.log(user);
 
     if (!user) {
       return res
@@ -159,7 +157,8 @@ exports.deleteUserById = async (req, res, next) => {
     Verification for Admin
     */
 
-    const user = await User.findByIdAndDelete(req.params._id);
+    console.log(req.params.id);
+    const user = await User.findByIdAndDelete(req.params.id);
     console.log(user);
     if (!user) {
       return res

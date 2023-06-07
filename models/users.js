@@ -1,7 +1,3 @@
-// const mongoose = require("mongoose");
-// const Schema = mongoose.Schema;
-// const getDb = require("../utils/database").getDb;
-// const Accommodation = require("./accommodation");
 
 module.exports = (mongoose) => {
   const schema = mongoose.Schema({
