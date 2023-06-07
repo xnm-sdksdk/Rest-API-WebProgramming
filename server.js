@@ -7,7 +7,7 @@ require("dotenv").config();
 const userRoutes = require("./routes/users.js");
 const eventRoutes = require("./routes/event.js");
 const accommodationRoutes = require("./routes/accommodation.js");
-// const reservationRoutes = require("./routes/reservation.js");
+const reservationRoutes = require("./routes/reservation.js");
 
 // Importing Model
 // const User = require("./models/users.js");
