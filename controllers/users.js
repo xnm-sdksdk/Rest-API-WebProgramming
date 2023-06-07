@@ -149,7 +149,27 @@ exports.getUserById = async (req, res, next) => {
   }
 };
 
-exports.updateUserById = (req, res, next) => {};
+exports.updateUserById = async (req, res, next) => {
+  try {
+    const userId = req.params.id;
+    const update = req.body;
+
+    const user = await User.findByIdAndUpdate(userId, update, { new: true }); // Force the return in the response
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found." });
+    }
+
+    res.status(200).json({ success: true, user });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message || "Something went wrong. Please try again later",
+    });
+  }
+};
 
 exports.deleteUserById = async (req, res, next) => {
   try {
