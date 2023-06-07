@@ -1,5 +1,3 @@
-// const Event = require("../models/event");
-// const User = require("../models/users");
 const db = require("../models/index");
 const Event = db.events;
 const config = require("../config/config");
@@ -7,12 +5,13 @@ const config = require("../config/config");
 // Get all Events
 exports.getEvents = async (req, res, next) => {
   try {
-    Event.find().then((events) => {
-      console.log(events);
-      res.status(200).json({ success: false, message: events });
-    });
+    const events = await Event.find();
+    res.status(200).json(events);
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    res.status(500).json({
+      success: false,
+      message: err.message || "Something went wrong. Please try again later.",
+    });
   }
 };
 
@@ -35,21 +34,21 @@ exports.getEventById = async (req, res, next) => {
 
 exports.createEvent = async (req, res) => {
   try {
-    if (!req.body && !req.body.title) {
+    const { title, description, location, date, time, type } = req.body;
+
+    if (!title) {
       return res
         .status(400)
-        .json({ success: false, message: "All fields are mandatory" });
+        .json({ success: false, message: "Title field is mandatory" });
     }
 
-    if (req.loggedUser.role != 1) {
-      await Event.create(req.body);
-      res.status(201).json({
-        success: true,
-        message: `Event ${req.body.title} created successfully`,
-      });
-      const { title, description, location, date, time, type } = req.body;
-      const images = [];
-      // const participants = [];
+    const existTitle = await Event.findOne({ title });
+    
+    if(existTitle) {
+      return res.status(400).json({ success: false, message: "The Event with the given title is already being used." })
+    }
+
+    if (req.loggedUser.role !== 1) {
       const event = new Event({
         title: title,
         description: description,
@@ -60,6 +59,7 @@ exports.createEvent = async (req, res) => {
         images: [],
         participants: [],
       });
+
       console.log(event + "First Log");
       await event.save();
       console.log(event + "Second Log");
@@ -72,7 +72,7 @@ exports.createEvent = async (req, res) => {
         type: event.type,
         images: event.images,
       };
-      res.status(201).json(response);
+      res.status(201).json({ success: true, message: "Event ${event.title} created successfully!", event: response});
     } else {
       res.status(403).json({ success: false, message: "Permission denied." });
     }
