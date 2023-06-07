@@ -7,7 +7,7 @@ const config = require("../config/config");
 // Create a new user
 exports.registerUser = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
 
     if (!name || !email || !password) {
       return res
@@ -33,13 +33,16 @@ exports.registerUser = async (req, res) => {
       });
     }
 
+    const validRoles = [1, 2, 3];
+    const roleSelection = validRoles.includes(role) ? role : 1;
+
     const accommodations = [];
     const events = [];
     const newUser = new User({
       name: name,
       email: email,
       password: bcrypt.hashSync(req.body.password, 8),
-      role: 1,
+      role: roleSelection,
       accommodations: accommodations,
       events: events,
     });
@@ -115,6 +118,7 @@ exports.loginUser = async (req, res, next) => {
   }
 };
 
+//! To Be Done
 exports.refreshToken = (req, res, next) => {};
 
 // Get All
@@ -193,6 +197,8 @@ exports.deleteUserById = async (req, res, next) => {
   }
 };
 
+//! To Be Done
 exports.addInterest = (req, res, next) => {};
 
+//! To Be Done
 exports.removeInterest = (req, res, next) => {};
