@@ -3,11 +3,11 @@ const router = express.Router();
 const multer = require("multer");
 //const { check } = require("express-validator/check");
 const usersController = require("../controllers/users");
-const multerUploads = multer({ storage }).single("image");
+// const multerUploads = multer({ storage }).single("image");
 
 // POST Register new Users
-router.route("/").post(multerUploads, usersController.registerUser);
-
+router.route("/").post(usersController.registerUser);
+// multerUploads,
 // POST Login User
 router.route("/login").post(usersController.loginUser);
 
