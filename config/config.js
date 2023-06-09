@@ -1,7 +1,7 @@
 const config = {
-  USER: process.env.DB_USER || "40210260",
-  PASSWORD: process.env.DB_PASSWORD || "12345",
-  DB: process.env.DB || "RestApiWP",
+  USER: process.env.DB_USER,
+  PASSWORD: process.env.DB_PASSWORD,
+  DB: process.env.DB,
   SECRET: process.env.SECRET,
 };
 
