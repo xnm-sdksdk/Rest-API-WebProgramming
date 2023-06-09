@@ -72,7 +72,7 @@ exports.createEvent = async (req, res) => {
         type: event.type,
         images: event.images,
       };
-      res.status(201).json({ success: true, message: "Event ${event.title} created successfully!", event: response});
+      res.status(201).json({ success: true, message: "Event created successfully!", event: response});
     } else {
       res.status(403).json({ success: false, message: "Permission denied." });
     }
