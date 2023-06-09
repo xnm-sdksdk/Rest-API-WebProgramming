@@ -2,12 +2,12 @@ const User = require("../models/users");
 const db = require("../models/index");
 const Accommodation = db.accommodations;
 
+// Get all Accommodations
+
 exports.getAccommodations = async (req, res, next) => {
   try {
-    Accommodation.find().then((accommodations) => {
-      console.log(accommodations);
-      res.status(200).json({ success: false, message: accommodations });
-    });
+    const accommodations = await Accommodation.find();
+    res.status(200).json(accommodations);
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
@@ -28,7 +28,7 @@ exports.getAccommodationById = async (req, res, next) => {
   } catch (err) {
     res.status(500).json({
       success: false,
-      message: err.message || "An Internal Error occurred.",
+      message: err.message || "Something went wrong. Please try again later.",
     });
   }
 };
@@ -106,37 +106,47 @@ exports.createAccommodation = async (req, res, next) => {
 // Updated Accommodation
 
 exports.updateAccommodationById = async (req, res, next) => {
-  const accommodationId = req.body.accommodationId;
-  const updatedTitle = req.body.title;
-  const updatedDescription = req.body.description;
-  const updatedLocation = req.body.location;
-  const updatedPrice = req.body.price;
-  const updatedBeds = req.body.number_beds;
-  const updatedRoom = req.body.room_type;
-  const updatedAvailability = req.body.availability;
-  const updatedImages = req.body.images;
-  const updatedAmenities = req.body.amenities;
+  try {
+    const accommodationId = req.params.id;
+    const {
+      title,
+      description,
+      location,
+      price,
+      rating,
+      number_beds,
+      room_type,
+      amenities,
+    } = req.body;
 
-  Accommodation.findById(accommodationId)
-    .then((accommodation) => {
-      accommodation.title = updatedTitle;
-      accommodation.description = updatedDescription;
-      accommodation.location = updatedLocation;
-      accommodation.price = updatedPrice;
-      accommodation.number_beds = updatedBeds;
-      accommodation.room_type = updatedRoom;
-      accommodation.availability = updatedAvailability;
-      accommodation.images = updatedImages;
-      accommodation.amenities = updatedAmenities;
-      return accommodation.save();
-    })
-    .then((result) => {
-      console.log("Updated Product");
-      res.status(202).json({
-        success: true,
-        message: "Accommodation updated successfully " + result,
-      });
+    const accommodation = await Accommodation.findByIdAndUpdate(
+      accommodationId,
+      {
+        title,
+        description,
+        location,
+        price,
+        rating,
+        number_beds,
+        room_type,
+        amenities,
+      },
+      { new: true }
+    );
+
+    if (!accommodation) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Accommodations not found." });
+    }
+
+    res.status(200).json({ success: true, message: accommodation });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message || "Something went wrong. Please try again later",
     });
+  }
 };
 
 exports.deleteAccommodationById = async (req, res, next) => {
