@@ -151,14 +151,24 @@ exports.updateAccommodationById = async (req, res, next) => {
 };
 
 exports.deleteAccommodationById = async (req, res, next) => {
-  const accommodationId = req.body.accommodationId;
-  Accommodation.findByIdAndRemove(accommodationId)
-    .then(() => {
-      res.status(202).json({ success: true, message: "Product removed" });
-    })
-    .catch((err) => {
-      res
-        .status(500)
-        .json({ success: false, message: "An Internal Error occurred." });
+  try {
+    console.log(req.params.id);
+    const accommodation = await Accommodation.findByIdAndRemove(req.params.id);
+    console.log(id);
+
+    if (!accommodation) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Accommodation not found." });
+    }
+
+    res
+      .status(202)
+      .json({ success: true, message: "Accommodation deleted successfully." });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message || "An Internal Error occurred.",
     });
+  }
 };
