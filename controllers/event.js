@@ -43,9 +43,12 @@ exports.createEvent = async (req, res) => {
     }
 
     const existTitle = await Event.findOne({ title });
-    
-    if(existTitle) {
-      return res.status(400).json({ success: false, message: "The Event with the given title is already being used." })
+
+    if (existTitle) {
+      return res.status(400).json({
+        success: false,
+        message: "The Event with the given title is already being used.",
+      });
     }
 
     if (req.loggedUser.role !== 1) {
@@ -72,7 +75,11 @@ exports.createEvent = async (req, res) => {
         type: event.type,
         images: event.images,
       };
-      res.status(201).json({ success: true, message: "Event created successfully!", event: response});
+      res.status(201).json({
+        success: true,
+        message: "Event created successfully!",
+        event: response,
+      });
     } else {
       res.status(403).json({ success: false, message: "Permission denied." });
     }
@@ -83,38 +90,40 @@ exports.createEvent = async (req, res) => {
   }
 };
 
-//!
-exports.updateEventById = async (req, res, next) => {
-  const eventId = req.params.id;
-  const updatedTitle = req.body.title;
-  const updatedDescription = req.body.description;
-  const updatedLocation = req.body.location;
-  const updatedDate = req.body.date;
-  const updatedTime = req.body.time;
-  const updatedType = req.body.type;
-  const updatedImages = req.body.images;
+// Update Event By ID
 
-  console.log(req.params.id);
-  Event.findById(eventId)
-    .then((event) => {
-      event.title = updatedTitle;
-      event.description = updatedDescription;
-      event.location = updatedLocation;
-      event.date = updatedDate;
-      event.time = updatedTime;
-      event.type = updatedType;
-      event.images = updatedImages;
-      return event.save();
-    })
-    .then((result) => {
-      res.status(202).json({
-        success: true,
-        message: "Event updated successfully " + result,
-      });
-    })
-    .catch((err) => {
-      res.status(500).json({ success: false, message: err.message });
+exports.updateEventById = async (req, res, next) => {
+  try {
+    const eventId = req.params.id;
+    const { title, description, location, date, time, type } = req.body;
+    console.log(req.params.id);
+
+    const event = await Event.findByIdAndUpdate(
+      eventId,
+      {
+        title,
+        description,
+        location,
+        date,
+        time,
+        type,
+      },
+      { new: true }
+    );
+
+    if (!event) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Event not found." });
+    }
+
+    res.status(200).json({ success: true, message: event });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message || "Something went wrong. Please try again later",
     });
+  }
 };
 
 // Delete Event by ID
