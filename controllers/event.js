@@ -32,6 +32,9 @@ exports.getEventById = async (req, res, next) => {
   }
 };
 
+
+// Create Event
+
 exports.createEvent = async (req, res) => {
   try {
     const { title, description, location, date, time, type } = req.body;
