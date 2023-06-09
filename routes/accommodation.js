@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const accommodationsController = require("../controllers/accommodation");
+const auth = require("../controllers/auth");
 
 // Get ALL Accommodations
 router.route("/").get(accommodationsController.getAccommodations);
@@ -9,12 +10,12 @@ router.route("/").get(accommodationsController.getAccommodations);
 router.route("/:id").get(accommodationsController.getAccommodationById);
 
 // POST Accommodation
-router.route("/").post(accommodationsController.createAccommodation);
+router.route("/").post(auth.verifyToken, accommodationsController.createAccommodation);
 
-// PATCH Updating Accommodation BY ID
-router.route("/:id").patch(accommodationsController.updateAccommodationById);
+// PUT Updating Accommodation BY ID
+router.route("/:id").put(auth.verifyToken, accommodationsController.updateAccommodationById);
 
 // Delete Accommodation BY ID
-router.route("/:id").delete(accommodationsController.deleteAccommodationById);
+router.route("/:id").delete(auth.verifyToken, accommodationsController.deleteAccommodationById);
 
 module.exports = router;
