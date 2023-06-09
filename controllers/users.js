@@ -51,6 +51,8 @@ exports.registerUser = async (req, res) => {
       role: roleSelection,
       accommodations: accommodations,
       events: events,
+      profile_image: user_img ? user_img.url : null,
+      cloudinary_id: user_img ? user_img.public_id : null,
     });
     const savedUser = await newUser.save();
     console.log(savedUser);
@@ -61,8 +63,6 @@ exports.registerUser = async (req, res) => {
       role: savedUser.role,
       accommodations: savedUser.accommodations,
       events: savedUser.events,
-      profile_image: user_img ? user_img.url : null,
-      cloudinary_id: user_img ? user_img.public_id : null,
     };
     res.status(201).json(response);
   } catch (err) {
