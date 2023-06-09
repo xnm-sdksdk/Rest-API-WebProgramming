@@ -34,12 +34,6 @@ exports.getAccommodationById = async (req, res, next) => {
 
 exports.createAccommodation = async (req, res, next) => {
   try {
-    if (!req.body && !req.body.title) {
-      return res
-        .status(404)
-        .json({ success: false, message: "All fields are mandatory" });
-    }
-
     const {
       title,
       description,
@@ -50,70 +44,60 @@ exports.createAccommodation = async (req, res, next) => {
       room_type,
       amenities,
     } = req.body;
-    images = [];
-    const accommodation = new Accommodation({
-      title: title,
-      description: description,
-      location: location,
-      price: price,
-      rating: rating,
-      number_beds: number_beds,
-      room_type: room_type,
-      amenities: amenities,
-    });
-    console.log(accommodation);
-    await accommodation.save();
 
-    const response = {
-      title: accommodation.title,
-      description: accommodation.description,
-      location: accommodation.location,
-      price: accommodation.price,
-      rating: accommodation.rating,
-      number_beds: accommodation.number_beds,
-      room_type: accommodation.room_type,
-      amenities: accommodation.amenities,
-    };
-    res.status(201).json({ response });
-  } catch (error) {
-    console.log(err);
-    res.status(500).json({ err });
-  }
+    if (!title) {
+      return res
+        .status(404)
+        .json({ success: false, message: "All fields are mandatory" });
+    }
 
-  const title = req.body.title;
-  const images = req.body.images;
-  const description = req.body.description;
-  const location = req.body.location;
-  const price = req.body.price;
-  const number_beds = req.body.number_beds;
-  const room_type = req.body.room_type;
-  const availability = req.body.availability;
-  const amenities = req.body.amenities;
-  const accommodation = new Accommodation({
-    title: title,
-    description: description,
-    location: location,
-    price: price,
-    number_beds: number_beds,
-    room_type: room_type,
-    availability: availability,
-    images: images,
-    amenities: amenities,
-    facilitatorId: req.facilitator,
-  });
-  accommodation
-    .save()
-    .then((result) => {
+    const checkTitle = await Accommodation.findOne({ title });
+
+    if (checkTitle) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "The Accommodation with the given title is already being used.",
+      });
+    }
+
+    if (req.loggedUser.role !== 1) {
+      const accommodation = new Accommodation({
+        title: title,
+        description: description,
+        location: location,
+        price: price,
+        rating: rating,
+        number_beds: number_beds,
+        room_type: room_type,
+        amenities: amenities,
+      });
+      await accommodation.save();
+
+      const response = {
+        title: accommodation.title,
+        description: accommodation.description,
+        location: accommodation.location,
+        price: accommodation.price,
+        rating: accommodation.rating,
+        number_beds: accommodation.number_beds,
+        room_type: accommodation.room_type,
+        amenities: accommodation.amenities,
+      };
       res.status(201).json({
         success: true,
-        message: "Accommodation created successfully " + result,
+        message: "Accommodation created successfully.",
+        accommodation: response,
       });
-    })
-    .catch((err) => {
-      res
-        .status(500)
-        .json({ success: false, message: "An Internal Error occurred." + err });
+    } else {
+      res.status(403).json({ success: false, message: "Permission denied." });
+    }
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message || "An Internal Error occurred.",
     });
+  }
 };
 
 exports.updateAccommodationById = async (req, res, next) => {
