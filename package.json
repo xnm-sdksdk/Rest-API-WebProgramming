@@ -23,7 +23,7 @@
     "url": "https://github.com/xnm-sdksdk/Rest-API-WebProgramming/issues"
   },
   "homepage": "https://github.com/xnm-sdksdk/Rest-API-WebProgramming#readme",
-  "devDependencies": {
+  "dependencies": {
     "bcrypt": "^5.1.0",
     "cloudinary": "^1.37.1",
     "dotenv": "^16.1.4",
