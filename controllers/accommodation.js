@@ -13,24 +13,27 @@ exports.getAccommodations = async (req, res, next) => {
   }
 };
 
+// Get accommodation by id
+
 exports.getAccommodationById = async (req, res, next) => {
-  const accommodationId = req.params.id;
-  Accommodation.findById(accommodationId)
-    .then((accommodation) => {
-      if (!accommodation) {
-        return res
-          .status(404)
-          .json({ success: false, message: "Accommodation not found." });
-      }
-      // then to add
-      res.status.json({});
-    })
-    .catch((err) => {
+  try {
+    let accommodation = await Accommodation.findById(req.params.id);
+    if (!accommodation) {
       res
-        .status(500)
-        .json({ success: false, message: "An Internal Error occurred." });
+        .status(404)
+        .json({ success: false, message: "Accommodation not found" });
+    }
+
+    res.status(200).json({ success: true, message: accommodation });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message || "An Internal Error occurred.",
     });
+  }
 };
+
+// Create accommodation
 
 exports.createAccommodation = async (req, res, next) => {
   try {
@@ -99,6 +102,8 @@ exports.createAccommodation = async (req, res, next) => {
     });
   }
 };
+
+// Updated Accommodation
 
 exports.updateAccommodationById = async (req, res, next) => {
   const accommodationId = req.body.accommodationId;

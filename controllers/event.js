@@ -83,8 +83,9 @@ exports.createEvent = async (req, res) => {
   }
 };
 
+//!
 exports.updateEventById = async (req, res, next) => {
-  const eventId = req.body.eventId;
+  const eventId = req.params.id;
   const updatedTitle = req.body.title;
   const updatedDescription = req.body.description;
   const updatedLocation = req.body.location;
@@ -93,6 +94,7 @@ exports.updateEventById = async (req, res, next) => {
   const updatedType = req.body.type;
   const updatedImages = req.body.images;
 
+  console.log(req.params.id);
   Event.findById(eventId)
     .then((event) => {
       event.title = updatedTitle;
@@ -120,8 +122,8 @@ exports.deleteEventById = async (req, res, next) => {
   try {
     console.log(req.params.id);
     const event = await Event.findByIdAndRemove(req.params.id);
-    console.log(id);
     if (!event) {
+      console.log(event);
       return res.status(404).json({
         success: false,
         message: "Event not found.",
