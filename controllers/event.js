@@ -32,7 +32,6 @@ exports.getEventById = async (req, res, next) => {
   }
 };
 
-
 // Create Event
 
 exports.createEvent = async (req, res) => {
@@ -149,7 +148,20 @@ exports.deleteEventById = async (req, res, next) => {
   } catch (err) {
     res.status(500).json({
       success: false,
-      message: err.message,
+      message: err.message || "Something went wrong. Please try again later",
+    });
+  }
+};
+
+// Get Search By event
+
+exports.searchEvent = async (req, res, next) => {
+  try {
+    const { keyword, location, date } = req.query;
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message || "Something went wrong. Please try again later",
     });
   }
 };

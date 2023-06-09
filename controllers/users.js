@@ -9,6 +9,12 @@ exports.registerUser = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
 
+    let user_img = null;
+
+    if (req.file) {
+      user_img = await cloudinary.uploader.upload(req.file.path);
+    }
+
     if (!name || !email || !password) {
       return res
         .status(400)
@@ -55,6 +61,8 @@ exports.registerUser = async (req, res) => {
       role: savedUser.role,
       accommodations: savedUser.accommodations,
       events: savedUser.events,
+      profile_image: user_img ? user_img.url : null,
+      cloudinary_id: user_img ? user_img.public_id : null,
     };
     res.status(201).json(response);
   } catch (err) {

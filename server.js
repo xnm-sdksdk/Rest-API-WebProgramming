@@ -1,6 +1,7 @@
 const path = require("path");
 const express = require("express");
 const cors = require("cors");
+const multer = require("multer");
 require("dotenv").config();
 
 // Importing Routes
@@ -11,6 +12,34 @@ const reservationRoutes = require("./routes/reservation.js");
 
 // Importing Model
 // const User = require("./models/users.js");
+
+// Define where the files get stored
+let storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "images");
+  },
+  filename: (req, file, cb) => {
+    cb(null, newDate().toISOString() + "-" + file.originalname);
+  },
+});
+
+const fileFilter = (req, file, cb) => {
+  if (
+    file.mimetype === "image/png" ||
+    file.mimetype === "image/jpg" ||
+    file.mimetype === "image/jpeg"
+  ) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
+// Register Molter
+const multerUploads = multer({
+  storage: storage,
+  fileFilter: fileFilter,
+}).single("image");
 
 // Start the App
 const app = express();

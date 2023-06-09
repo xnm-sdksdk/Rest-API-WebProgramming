@@ -1,10 +1,12 @@
 const express = require("express");
 const router = express.Router();
+const multer = require("multer");
 //const { check } = require("express-validator/check");
 const usersController = require("../controllers/users");
+const multerUploads = multer({ storage }).single("image");
 
 // POST Register new Users
-router.route("/").post(usersController.registerUser);
+router.route("/").post(multerUploads, usersController.registerUser);
 
 // POST Login User
 router.route("/login").post(usersController.loginUser);
