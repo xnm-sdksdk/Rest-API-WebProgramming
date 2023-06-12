@@ -153,9 +153,9 @@ exports.deleteAccommodationById = async (req, res, next) => {
   try {
     console.log(req.params.id);
     const accommodation = await Accommodation.findByIdAndRemove(req.params.id);
-    console.log(id);
 
     if (!accommodation) {
+      console.log(accommodation);
       return res
         .status(404)
         .json({ success: false, message: "Accommodation not found." });
