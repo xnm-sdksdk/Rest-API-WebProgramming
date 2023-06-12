@@ -1,6 +1,6 @@
 const config = {
-  USER: process.env.DB_USER,
-  PASSWORD: process.env.DB_PASSWORD,
+  USER: "40210260", //process.env.USER
+  PASSWORD: process.env.PASSWORD,
   DB: process.env.DB,
   SECRET: process.env.SECRET,
 };
