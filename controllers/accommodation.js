@@ -50,11 +50,9 @@ exports.createAccommodation = async (req, res, next) => {
 
     if (!title) {
       return res
-        .status(404)
+        .status(400)
         .json({ success: false, message: "All fields are mandatory" });
     }
-
-    let creator;
 
     const checkTitle = await Accommodation.findOne({ title });
 
@@ -78,14 +76,14 @@ exports.createAccommodation = async (req, res, next) => {
         amenities: amenities,
         facilitatorId: req.facilitatorId,
       });
-      await accommodation.save().then(async (result) => {
-        const user = await User.findById(req.facilitatorId);
-        if (user) {
-          user.accommodation.push(accommodation);
-          await user.save();
-          creator = user;
-        }
-      });
+
+      const savedAccommodation = await accommodation.save();
+
+      const user = await User.findById(req.facilitatorId);
+      if (user) {
+        user.accommodations.push(savedAccommodation._id);
+        await user.save();
+      }
 
       const response = {
         title: accommodation.title,
@@ -96,7 +94,7 @@ exports.createAccommodation = async (req, res, next) => {
         number_beds: accommodation.number_beds,
         room_type: accommodation.room_type,
         amenities: accommodation.amenities,
-        facilitatorId: req.facilitatorId,
+        facilitatorId: savedAccommodation.facilitatorId,
       };
       res.status(201).json({
         success: true,
