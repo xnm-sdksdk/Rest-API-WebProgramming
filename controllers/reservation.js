@@ -18,6 +18,8 @@ exports.createReservation = (req, res, next) => {
   }
 };
 
+// Get all Reservations
+
 exports.getReservations = async (req, res, next) => {
   try {
     const reservations = await Reservation.find();
@@ -30,8 +32,19 @@ exports.getReservations = async (req, res, next) => {
   }
 };
 
+// Get Reservation by id
+
 exports.getReservationById = async (req, res, next) => {
   try {
+    let reservation = await Reservation.findById(req.params.id);
+    if (!reservation) {
+      re.status(404).json({
+        success: false,
+        message: "Reservation not found.",
+      });
+    }
+
+    res.status(500).json({ success: true, message: reservation });
   } catch (err) {
     res.status(500).json({
       success: false,
@@ -52,6 +65,16 @@ exports.updateReservationById = async (req, res, next) => {
 
 exports.deleteReservationById = async (req, res, next) => {
   try {
+    const reservation = await Reservation.findByIdAndRemove(req.params.id);
+    if (!reservation) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Reservation not found." });
+    }
+
+    res
+      .status(202)
+      .json({ success: true, message: "Reservation deleted successfully." });
   } catch (err) {
     res.status(500).json({
       success: false,
