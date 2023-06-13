@@ -1,3 +1,7 @@
+const User = require("../models/users");
+const db = require("../models/index");
+const Reservation = db.reservations;
+
 exports.createReservation = (req, res, next) => {
   try {
     const {
@@ -16,6 +20,8 @@ exports.createReservation = (req, res, next) => {
 
 exports.getReservations = async (req, res, next) => {
   try {
+    const reservations = await Reservation.find();
+    res.status(200).json(reservations);
   } catch (err) {
     res.status(500).json({
       success: false,
