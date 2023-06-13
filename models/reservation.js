@@ -5,8 +5,8 @@
 
 module.exports = (mongoose) => {
   const schema = mongoose.Schema({
-    accommodation_id: {
-      type: mongoose.Schema.Types.ObjectId,
+    accommodation_title: {
+      type: mongoose.Schema.Types.title,
       ref: "Accommodation",
       // required: true,
     },
