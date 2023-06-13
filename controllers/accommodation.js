@@ -1,4 +1,4 @@
-const User = require("../models/users");
+const { User } = require("../models/users");
 const db = require("../models/index");
 const Accommodation = db.accommodations;
 
@@ -79,7 +79,7 @@ exports.createAccommodation = async (req, res, next) => {
 
       const savedAccommodation = await accommodation.save();
 
-      const user = await User.findById(req.facilitatorId);
+      const user = await User.findOne({ _id: req.facilitatorId});
       if (user) {
         user.accommodations.push(savedAccommodation._id);
         await user.save();
