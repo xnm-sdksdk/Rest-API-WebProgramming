@@ -54,6 +54,8 @@ exports.createAccommodation = async (req, res, next) => {
         .json({ success: false, message: "All fields are mandatory" });
     }
 
+    let creator;
+
     const checkTitle = await Accommodation.findOne({ title });
 
     if (checkTitle) {
@@ -74,8 +76,16 @@ exports.createAccommodation = async (req, res, next) => {
         number_beds: number_beds,
         room_type: room_type,
         amenities: amenities,
+        facilitatorId: req.facilitatorId,
       });
-      await accommodation.save();
+      await accommodation.save().then(async (result) => {
+        const user = await User.findById(req.facilitatorId);
+        if (user) {
+          user.accommodation.push(accommodation);
+          await user.save();
+          creator = user;
+        }
+      });
 
       const response = {
         title: accommodation.title,
@@ -86,6 +96,7 @@ exports.createAccommodation = async (req, res, next) => {
         number_beds: accommodation.number_beds,
         room_type: accommodation.room_type,
         amenities: accommodation.amenities,
+        facilitatorId: req.facilitatorId,
       };
       res.status(201).json({
         success: true,
@@ -160,6 +171,15 @@ exports.deleteAccommodationById = async (req, res, next) => {
         .status(404)
         .json({ success: false, message: "Accommodation not found." });
     }
+
+    // if (accommodation.facilitatorId.toString() !== req.facilitatorId) {
+    //   return res
+    //     .status(403)
+    //     .json({
+    //       success: false,
+    //       message: "This accommodation does not belong to you.",
+    //     });
+    // }
 
     res
       .status(202)

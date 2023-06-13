@@ -41,8 +41,8 @@ module.exports = (mongoose) => {
       // required: true,
     },
     facilitatorId: {
-      // type: Schema.Types.ObjectId,
-      // ref: "Facilitator",
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
       // required: true,
     },
   });
