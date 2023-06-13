@@ -39,6 +39,16 @@ exports.registerUser = async (req, res) => {
       });
     }
 
+    const minLength = 5;
+
+    if (password.length >= minLength) {
+      return res.status(400).json({
+        success: false,
+        message: "Password must have more then 5 characters.",
+      });
+    }
+
+
     const validRoles = [1, 2, 3];
     const roleSelection = validRoles.includes(role) ? role : 1;
 
