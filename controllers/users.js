@@ -22,14 +22,14 @@ exports.registerUser = async (req, res) => {
         .json({ success: false, message: "All fields are mandatory." });
     }
 
-    const minLength = 5;
+    // const minLength = 5;
 
-    if (password.length <= minLength) {
-      return res.status(400).json({
-        success: false,
-        message: "Password must have more then 5 characters.",
-      });
-    }
+    // if (password.length <= minLength) {
+    //   return res.status(400).json({
+    //     success: false,
+    //     message: "Password must have more then 5 characters.",
+    //   });
+    // }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
