@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const db = require("../models/index");
 const User = db.users;
 const config = require("../config/config");
+const userModel = require("../models/users");
 
 // Create a new user
 exports.registerUser = async (req, res) => {
@@ -19,6 +20,15 @@ exports.registerUser = async (req, res) => {
       return res
         .status(400)
         .json({ success: false, message: "All fields are mandatory." });
+    }
+
+    const minLength = 5;
+
+    if (password.length <= minLength) {
+      return res.status(400).json({
+        success: false,
+        message: "Password must have more then 5 characters.",
+      });
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -38,16 +48,6 @@ exports.registerUser = async (req, res) => {
         message: "Email is already being used.",
       });
     }
-
-    const minLength = 5;
-
-    if (password.length >= minLength) {
-      return res.status(400).json({
-        success: false,
-        message: "Password must have more then 5 characters.",
-      });
-    }
-
 
     const validRoles = [1, 2, 3];
     const roleSelection = validRoles.includes(role) ? role : 1;
