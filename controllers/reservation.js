@@ -23,6 +23,13 @@ exports.createReservation = (req, res, next) => {
 exports.getReservations = async (req, res, next) => {
   try {
     const reservations = await Reservation.find();
+
+    if (reservations.count() === 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "No events found." });
+    }
+
     res.status(200).json(reservations);
   } catch (err) {
     res.status(500).json({
