@@ -185,7 +185,7 @@ exports.searchEvent = async (req, res, next) => {
 
     res.status(200).json(events);
   } catch (err) {
-    res.status(500).json({
+    res.status(err.status || 500).json({
       success: false,
       message: err.message || "Something went wrong. Please try again later",
     });
