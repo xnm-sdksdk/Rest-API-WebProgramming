@@ -53,7 +53,7 @@ exports.createEvent = async (req, res) => {
       });
     }
 
-    let eventDate;
+    let eventDate = new Date(date);
 
     if (eventDate < Date.now()) {
       return res
