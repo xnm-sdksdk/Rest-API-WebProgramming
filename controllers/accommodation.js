@@ -8,7 +8,7 @@ exports.getAccommodations = async (req, res, next) => {
   try {
     const accommodations = await Accommodation.find();
     
-    if (accommodations.count() === 0) {
+    if (accommodations.length === 0) {
       return res
         .status(404)
         .json({ success: false, message: "No events found." });
