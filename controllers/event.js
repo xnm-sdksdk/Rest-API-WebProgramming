@@ -173,6 +173,10 @@ exports.searchEvent = async (req, res, next) => {
 
     if (title) {
       query.title = { $regex: title, $options: "i" }; // for case insensitive
+    } else {
+      return res
+        .status(404)
+        .json({ success: false, message: "No events with the given title found." });
     }
 
     const events = await Event.find(query);
