@@ -171,21 +171,42 @@ exports.searchEvent = async (req, res, next) => {
 
     const query = {};
 
-    // if (title) {
-    //   query.title = { $regex: title, $options: "i" }; // for case insensitive
-    // }
+    if (title) {
+      query.title = { $regex: title, $options: "i" }; // for case insensitive
+    } else {
+      return res
+        .status(400)
+        .json({
+          success: false,
+          message: "Event with the given title not found.",
+        });
+    }
 
-    // if(location){
-    //   query.location = { $regex: location, $options: "i" };
-    // }
+    if (location) {
+      query.location = { $regex: location, $options: "i" };
+    } else {
+      return res
+        .status(400)
+        .json({
+          success: false,
+          message: "Event with the given location not found.",
+        });
+    }
 
-    // if(date){
-    //   query.date = { $gte: new Date(date) }; // greater than or equal to
-    // }
+    if (date) {
+      query.date = { $gte: new Date(date) }; // greater than or equal to
+    } else {
+      return res
+        .status(400)
+        .json({
+          success: false,
+          message: "Event with the given date not found.",
+        });
+    }
 
-    const events = await Event.find({
-      title: { $regex: title, $options: "i" }
-    });
+    console.log(title);
+
+    const events = await Event.find(query);
 
     res.status(200).json(events);
   } catch (err) {
