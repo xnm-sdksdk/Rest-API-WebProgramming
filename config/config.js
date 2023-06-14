@@ -1,5 +1,5 @@
 const config = {
-  USER: "40210260", //process.env.USER
+  USER: process.env.USER,
   PASSWORD: process.env.PASSWORD,
   DB: process.env.DB,
   SECRET: process.env.SECRET,
