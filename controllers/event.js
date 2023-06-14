@@ -6,11 +6,13 @@ const config = require("../config/config");
 exports.getEvents = async (req, res, next) => {
   try {
     const events = await Event.find();
-    
-    if (events.length === 0) {
-      return res.status(404).json({success:false, message: "No events found."})
+
+    if (events.count() === 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "No events found." });
     }
-    
+
     res.status(200).json(events);
   } catch (err) {
     res.status(500).json({
@@ -61,12 +63,10 @@ exports.createEvent = async (req, res) => {
     let eventDate = new Date(date);
 
     if (eventDate < Date.now()) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "The Event with the given date is invalid.",
-        });
+      return res.status(400).json({
+        success: false,
+        message: "The Event with the given date is invalid.",
+      });
     }
 
     if (req.loggedUser.role !== 1) {
