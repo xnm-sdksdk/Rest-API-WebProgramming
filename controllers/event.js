@@ -171,19 +171,21 @@ exports.searchEvent = async (req, res, next) => {
 
     const query = {};
 
-    if (title) {
-      query.title = { $regex: title, $options: "i" }; // for case insensitive
-    }
+    // if (title) {
+    //   query.title = { $regex: title, $options: "i" }; // for case insensitive
+    // }
 
-    if(location){
-      query.location = { $regex: location, $options: "i" };
-    }
+    // if(location){
+    //   query.location = { $regex: location, $options: "i" };
+    // }
 
-    if(date){
-      query.date = { $gte: new Date(date) }; // greater than or equal to
-    }
+    // if(date){
+    //   query.date = { $gte: new Date(date) }; // greater than or equal to
+    // }
 
-    const events = await Event.find(query);
+    const events = await Event.find({
+      title: { $regex: title, $options: "i" }
+    });
 
     res.status(200).json(events);
   } catch (err) {
