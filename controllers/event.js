@@ -53,7 +53,9 @@ exports.createEvent = async (req, res) => {
       });
     }
 
-    if (date < Date.now()) {
+    let eventDate;
+
+    if (eventDate < Date.now()) {
       return res
         .status(400)
         .json({
@@ -162,7 +164,7 @@ exports.deleteEventById = async (req, res, next) => {
   }
 };
 
-// Get Search By event
+// Search By Event ID
 
 exports.searchEvent = async (req, res, next) => {
   try {
