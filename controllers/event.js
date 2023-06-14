@@ -167,7 +167,17 @@ exports.deleteEventById = async (req, res, next) => {
 
 exports.searchEvent = async (req, res, next) => {
   try {
-    const { keyword, location, date } = req.query;
+    const { title, location, date } = req.query;
+
+    const query = {};
+
+    if (title) {
+      query.title = { $regex: title, $options: "i" }; // for case insensitive
+    }
+
+    const events = await Event.find(query);
+
+    res.status(200).json(events);
   } catch (err) {
     res.status(500).json({
       success: false,
