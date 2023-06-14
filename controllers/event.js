@@ -7,7 +7,7 @@ exports.getEvents = async (req, res, next) => {
   try {
     const events = await Event.find();
 
-    if (events.count() === 0) {
+    if (events.length === 0) {
       return res
         .status(404)
         .json({ success: false, message: "No events found." });
