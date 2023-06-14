@@ -9,7 +9,7 @@ exports.getEvents = async (req, res, next) => {
 
     if (!events) {
       return res
-        .status(404)
+        .status(400)
         .json({ success: false, message: "No events found." });
     }
 
