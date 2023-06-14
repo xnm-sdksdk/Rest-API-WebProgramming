@@ -175,13 +175,15 @@ exports.searchEvent = async (req, res, next) => {
       query.title = { $regex: title, $options: "i" }; // for case insensitive
     }
 
-    const events = await Event.find(query);
-
-    if (title && events.length === 0) {
-      return res
-        .status(404)
-        .json({ success: false, message: "No events found." });
+    if(location){
+      query.location = { $regex: location, $options: "i" };
     }
+
+    if(date){
+      query.date = { $gte: new Date(date) }; // greater than or equal to
+    }
+
+    const events = await Event.find(query);
 
     res.status(200).json(events);
   } catch (err) {
