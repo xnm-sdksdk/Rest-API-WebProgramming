@@ -10,12 +10,21 @@ router.route("/").get(accommodationsController.getAccommodations);
 router.route("/:id").get(accommodationsController.getAccommodationById);
 
 // POST Accommodation
-router.route("/").post(auth.verifyToken, accommodationsController.createAccommodation);
+router
+  .route("/")
+  .post(auth.verifyToken, accommodationsController.createAccommodation);
 
 // PUT Updating Accommodation BY ID
-router.route("/:id").put(auth.verifyToken, accommodationsController.updateAccommodationById);
+router
+  .route("/:id")
+  .put(auth.verifyToken, accommodationsController.updateAccommodationById);
 
 // Delete Accommodation BY ID
-router.route("/:id").delete(auth.verifyToken, accommodationsController.deleteAccommodationById);
+router
+  .route("/:id")
+  .delete(auth.verifyToken, accommodationsController.deleteAccommodationById);
+
+// Search Accommodation By ID
+router.route("/search/:id").post(accommodationsController.searchAccommodation);
 
 module.exports = router;

@@ -189,3 +189,13 @@ exports.deleteAccommodationById = async (req, res, next) => {
     });
   }
 };
+
+exports.searchAccommodation = async (req, res, next) => {
+  try {
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message || "An Internal Error occurred.",
+    });
+  }
+};
