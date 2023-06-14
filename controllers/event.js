@@ -53,6 +53,15 @@ exports.createEvent = async (req, res) => {
       });
     }
 
+    if (date < Date.now()) {
+      return res
+        .status(400)
+        .json({
+          success: false,
+          message: "The Event with the given date is invalid.",
+        });
+    }
+
     if (req.loggedUser.role !== 1) {
       const event = new Event({
         title: title,
