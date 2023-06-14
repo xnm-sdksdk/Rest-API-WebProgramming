@@ -7,13 +7,7 @@ const Accommodation = db.accommodations;
 exports.getAccommodations = async (req, res, next) => {
   try {
     const accommodations = await Accommodation.find();
-    
-    if (accommodations.length === 0) {
-      return res
-        .status(404)
-        .json({ success: false, message: "No events found." });
-    }
-    
+
     res.status(200).json(accommodations);
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
