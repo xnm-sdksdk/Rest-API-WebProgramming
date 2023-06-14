@@ -7,31 +7,31 @@ module.exports = (mongoose) => {
   const schema = mongoose.Schema({
     title: {
       type: String,
-      //required: true,
+      required: true,
     },
     description: {
       type: String,
-      // required: true,
+      required: true,
     },
     location: {
       type: String,
-      // required: true,
+      required: true,
     },
     date: {
       type: Date,
-      // required: true,
+      required: true,
     },
     time: {
       type: String,
-      // required: true,
+      required: true,
     },
     type: {
       type: String,
-      // required: true,
+      required: true,
     },
     images: {
       type: [String],
-      // required: true,
+      required: true,
     },
     participants: {
       type: [String],

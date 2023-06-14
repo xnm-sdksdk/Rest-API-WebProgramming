@@ -8,23 +8,23 @@ module.exports = (mongoose) => {
     accommodation_title: {
       type: mongoose.Schema.Types.title,
       ref: "Accommodation",
-      // required: true,
+      required: true,
     },
     check_in_date: {
       type: Date,
-      // required: true,
+      required: true,
     },
     check_out_date: {
       type: Date,
-      // required: true,
+      required: true,
     },
     status: {
       type: Boolean,
-      // required: true,
+      required: true,
     },
     number_guests: {
       type: Number,
-      // required: true,
+      required: true,
     },
   });
   const Reservation = mongoose.model("Reservation", schema);

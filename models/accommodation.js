@@ -6,44 +6,44 @@ module.exports = (mongoose) => {
   const schema = mongoose.Schema({
     title: {
       type: String,
-      // required: true,
+      required: true,
     },
     description: {
       type: String,
-      // required: true,
+      required: true,
     },
     location: {
       type: String,
-      // required: true,
+      required: true,
     },
     price: {
       type: Number,
-      // required: true,
+      required: true,
     },
     rating: {
       type: Number,
-      // required: true,
+      required: true,
     },
     number_beds: {
       type: Number,
-      // required: true,
+      required: true,
     },
     room_type: {
       type: String,
-      // required: true,
+      required: true,
     },
     images: {
       type: [String],
-      // required: true,
+      required: true,
     },
     amenities: {
       type: [String],
-      // required: true,
+      required: true,
     },
     facilitatorId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      // required: true,
+      required: true,
     },
   });
   const Accommodation = mongoose.model("Accommodation", schema);
