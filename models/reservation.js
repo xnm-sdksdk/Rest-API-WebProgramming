@@ -12,6 +12,7 @@ module.exports = (mongoose) => {
     },
     check_in_date: {
       type: Date,
+      min: Date.now,
       required: true,
     },
     check_out_date: {

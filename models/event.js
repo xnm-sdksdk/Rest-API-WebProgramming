@@ -19,6 +19,7 @@ module.exports = (mongoose) => {
     },
     date: {
       type: Date,
+      min: Date.now,
       required: true,
     },
     time: {
