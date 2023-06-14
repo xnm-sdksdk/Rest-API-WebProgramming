@@ -25,6 +25,6 @@ router
   .delete(auth.verifyToken, accommodationsController.deleteAccommodationById);
 
 // Search Accommodation By ID
-router.route("/search/:id").get(accommodationsController.searchAccommodation);
+router.route("/search").get(accommodationsController.searchAccommodation);
 
 module.exports = router;

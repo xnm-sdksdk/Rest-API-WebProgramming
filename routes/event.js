@@ -19,6 +19,6 @@ router.route("/:id").put(auth.verifyToken, eventsController.updateEventById);
 router.route("/:id").delete(auth.verifyToken, eventsController.deleteEventById);
 
 // Search Events By ID
-router.route("/search/:id").get(eventsController.searchEvent);
+router.route("/search").get(eventsController.searchEvent);
 
 module.exports = router;
