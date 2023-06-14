@@ -177,13 +177,10 @@ exports.searchEvent = async (req, res, next) => {
 
     const events = await Event.find(query);
 
-    if (!title && events.length === 0) {
-      const error = new Error("No events found.");
-      error.status = 404;
-      throw error;
-      // return res
-      //   .status(404)
-      //   .json({ success: false, message: "No events found." });
+    if (title && events.length === 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "No events found." });
     }
 
     res.status(200).json(events);
