@@ -1,15 +1,60 @@
 const User = require("../models/users");
 const db = require("../models/index");
 const Reservation = db.reservations;
+const Accommodation = db.accommodations;
+const User = db.users;
 
-exports.createReservation = (req, res, next) => {
+exports.createReservation = async (req, res, next) => {
   try {
-    const {
-      accommodation_title,
-      check_in_date,
-      check_out_date,
-      number_guests,
-    } = req.body;
+    const { accommodationId, checkInDate, checkOutDate, numberGuests } =
+      req.body;
+
+    const accommodation = await Accommodation.findById(accommodationId);
+    if (!accommodation) {
+      return res.status(404).json({
+        success: false,
+        message: "Accommodation not found.",
+      });
+    }
+
+    if (!checkInDate || !checkOutDate || !numberGuests) {
+      return res
+        .status(400)
+        .json({ success: false, message: "All fields are mandatory" });
+    }
+
+    const existReservation = await Reservation.findOne({
+      accommodation: accommodationId,
+      $or: [
+        { check_in_date: { $gte: checkInDate, $lt: checkOutDate } },
+        { check_out_date: { $gt: checkInDate, $lte: checkOutDate } },
+      ],
+    });
+
+    if (existReservation) {
+      return res.status(400).json({
+        success: false,
+        message: "Accommodation is already reserved for the given dates.",
+      });
+    }
+
+    // if (req.loggedUser.role !== 1) {
+
+    // }
+
+    const reservation = new Reservation({
+      accommodation: accommodationId,
+      check_in_date: checkInDate,
+      check_out_date: checkOutDate,
+      status: true,
+      number_guests: numberGuests,
+    });
+
+    await reservation.save();
+
+    res
+      .status(200)
+      .json({ success: true, message: "Accommodation reserved successfully." });
   } catch (err) {
     res.status(500).json({
       success: false,
@@ -62,7 +107,11 @@ exports.updateReservationById = async (req, res, next) => {
 
     const {} = req.body;
 
-    const reservation = await Reservation.findByIdAndUpdate(reservationId, {}, {new:true})
+    const reservation = await Reservation.findByIdAndUpdate(
+      reservationId,
+      {},
+      { new: true }
+    );
 
     if (!reservation) {
       return res
@@ -70,7 +119,7 @@ exports.updateReservationById = async (req, res, next) => {
         .json({ success: false, message: "Reservation not found." });
     }
 
-    res.status(200).json({success:false, message: reservation})
+    res.status(200).json({ success: false, message: reservation });
   } catch (err) {
     res.status(500).json({
       success: false,
