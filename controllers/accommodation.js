@@ -234,9 +234,16 @@ exports.searchAccommodation = async (req, res, next) => {
 
     res.status(200).json(accommodations);
   } catch (err) {
+    if (err.name === "CastError") {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid search parameters.",
+      });
+    }
+
     res.status(500).json({
       success: false,
-      message: err.message || "An Internal Error occurred.",
+      message: err.message || "Something went wrong. Please try again later.",
     });
   }
 };
