@@ -219,21 +219,21 @@ exports.searchAccommodation = async (req, res, next) => {
       });
     }
 
-    if (location) {
-      query.location = { $regex: location, $options: "i" };
-    }
+    // if (location) {
+    //   query.location = { $regex: location, $options: "i" };
+    // }
 
-    if (price) {
-      query.price = { $lte: parseFloat(price) };
-    }
+    // if (price) {
+    //   query.price = { $lte: parseFloat(price) };
+    // }
 
-    if (rating) {
-      query.rating = { $gte: parseFloat(rating) };
-    }
+    // if (rating) {
+    //   query.rating = { $gte: parseFloat(rating) };
+    // }
 
-    if (numberOfBeds) {
-      query.numberOfBeds = parseInt(numberOfBeds);
-    }
+    // if (numberOfBeds) {
+    //   query.numberOfBeds = parseInt(numberOfBeds);
+    // }
 
     const accommodations = await Accommodation.find(query);
 
