@@ -212,6 +212,11 @@ exports.searchAccommodation = async (req, res, next) => {
 
     if (title) {
       query.title = { $regex: title, $options: "i" };
+    } else {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide a title for the accommodation search.",
+      });
     }
 
     if (location) {
@@ -234,13 +239,6 @@ exports.searchAccommodation = async (req, res, next) => {
 
     res.status(200).json(accommodations);
   } catch (err) {
-    if (err.name === "CastError") {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid search parameters.",
-      });
-    }
-
     res.status(500).json({
       success: false,
       message: err.message || "Something went wrong. Please try again later.",
