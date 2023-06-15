@@ -215,9 +215,9 @@ exports.searchEvent = async (req, res, next) => {
 
 exports.attendEvent = async (req, res, next) => {
   try {
-    const userId = req.params.id;
+    const userName = req.params.name;
     const eventId = req.params.eventId;
-    console.log(userId);
+    console.log(userName);
     console.log(eventId);
 
     const event = await Event.findById(eventId);
@@ -227,22 +227,20 @@ exports.attendEvent = async (req, res, next) => {
         .json({ success: false, message: "Event not found." });
     }
 
-    if (event.participants.includes(userId)) {
+    if (event.participants.includes(userName)) {
       return res.status(400).json({
         success: false,
         message: "User is already attending the event.",
       });
     }
 
-    event.participants.push(userId);
+    event.participants.push(userName);
     await event.save();
 
-    res
-      .status(200)
-      .json({
-        success: true,
-        message: "User successfully attended the event.",
-      });
+    res.status(200).json({
+      success: true,
+      message: "User successfully attended the event.",
+    });
   } catch (err) {
     res.status(err.status || 500).json({
       success: false,
