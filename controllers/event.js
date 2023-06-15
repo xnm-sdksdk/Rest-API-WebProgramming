@@ -224,10 +224,7 @@ exports.attendEvent = async (req, res, next) => {
     console.log(userName);
     console.log(eventId);
 
-    res.status(200).json({
-        success: true,
-        message: userName,
-    });
+    res.status(200).json({ userName });
     // const event = await Event.findById(eventId);
     // if (!event) {
     //   return res
