@@ -34,4 +34,7 @@ router
   .route("/:userId/interests/:eventId")
   .delete(usersController.removeInterest);
 
+// POST Attend Event 
+router.route("/:eventId/attend").post(eventsController.attendEvent);
+
 module.exports = router;
