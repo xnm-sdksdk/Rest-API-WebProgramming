@@ -21,4 +21,7 @@ router.route("/:id").delete(auth.verifyToken, eventsController.deleteEventById);
 // Search Events By ID
 router.route("/search").get(eventsController.searchEvent);
 
+// POST Attend Event 
+router.route("/:eventId/attend").post(eventsController.attendEvent);
+
 module.exports = router;
