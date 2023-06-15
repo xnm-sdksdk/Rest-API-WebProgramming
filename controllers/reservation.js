@@ -1,4 +1,4 @@
-const User = require("../models/users");
+//const User = require("../models/users");
 const db = require("../models/index");
 const Reservation = db.reservations;
 const Accommodation = db.accommodations;
