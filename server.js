@@ -58,7 +58,7 @@ app.get("/api/v1/", (req, res) => {
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/events", eventRoutes);
 app.use("/api/v1/accommodations", accommodationRoutes);
-// app.use("/api/v1/reservations", reservationRoutes);
+app.use("/api/v1/reservations", reservationRoutes);
 
 app.use((req, res) => {
   res.status(404).json({ success: false, message: "Route not recognized." });
