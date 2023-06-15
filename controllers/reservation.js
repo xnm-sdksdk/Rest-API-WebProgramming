@@ -23,7 +23,7 @@ exports.createReservation = async (req, res, next) => {
         .json({ success: false, message: "All fields are mandatory" });
     }
 
-    const existReservation = await Reservation.findOne({
+    const existReservation = await Reservation.findById({
       accommodation: accommodationId,
       $or: [
         { check_in_date: { $gte: checkInDate, $lt: checkOutDate } },
