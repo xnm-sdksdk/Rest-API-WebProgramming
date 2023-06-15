@@ -49,7 +49,16 @@ exports.createAccommodation = async (req, res, next) => {
       amenities,
     } = req.body;
 
-    if (!title) {
+    if (
+      !title ||
+      !description ||
+      !location ||
+      !price ||
+      !rating ||
+      !number_beds ||
+      !room_type ||
+      !amenities
+    ) {
       return res
         .status(400)
         .json({ success: false, message: "All fields are mandatory" });
