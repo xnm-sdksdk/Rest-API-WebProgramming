@@ -219,7 +219,7 @@ exports.searchEvent = async (req, res, next) => {
 
 exports.attendEvent = async (req, res, next) => {
   try {
-    const userName = req.body.name;
+    const userName = req.params.name;
     const eventId = req.params.eventId;
     console.log(userName);
     console.log(eventId);
