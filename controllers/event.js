@@ -174,34 +174,28 @@ exports.searchEvent = async (req, res, next) => {
     if (title) {
       query.title = { $regex: title, $options: "i" }; // for case insensitive
     } else {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "Event with the given title not found.",
-        });
+      return res.status(400).json({
+        success: false,
+        message: "Event with the given title not found.",
+      });
     }
 
     if (location) {
       query.location = { $regex: location, $options: "i" };
     } else {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "Event with the given location not found.",
-        });
+      return res.status(400).json({
+        success: false,
+        message: "Event with the given location not found.",
+      });
     }
 
     if (date) {
       query.date = { $gte: new Date(date) }; // greater than or equal to
     } else {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "Event with the given date not found.",
-        });
+      return res.status(400).json({
+        success: false,
+        message: "Event with the given date not found.",
+      });
     }
 
     console.log(title);
@@ -209,6 +203,46 @@ exports.searchEvent = async (req, res, next) => {
     const events = await Event.find(query);
 
     res.status(200).json(events);
+  } catch (err) {
+    res.status(err.status || 500).json({
+      success: false,
+      message: err.message || "Something went wrong. Please try again later",
+    });
+  }
+};
+
+// Post Attend Event
+
+exports.attendEvent = async (req, res, next) => {
+  try {
+    const userId = req.params._id;
+    const eventId = req.params.eventId;
+    console.log(userId);
+    console.log(eventId);
+
+    const event = await Event.findById(eventId);
+    if (!event) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Event not found." });
+    }
+
+    if (event.participants.includes(userId)) {
+      return res.status(400).json({
+        success: false,
+        message: "User is already attending the event.",
+      });
+    }
+
+    event.participants.push(userId);
+    await event.save();
+
+    res
+      .status(200)
+      .json({
+        success: true,
+        message: "User successfully attended the event.",
+      });
   } catch (err) {
     res.status(err.status || 500).json({
       success: false,
