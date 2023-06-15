@@ -1,6 +1,7 @@
 const db = require("../models/index");
 const Event = db.events;
 const config = require("../config/config");
+const User = db.users;
 
 // Get all Events
 exports.getEvents = async (req, res, next) => {
@@ -219,10 +220,18 @@ exports.searchEvent = async (req, res, next) => {
 
 exports.attendEvent = async (req, res, next) => {
   try {
-    const userName = req.params.name;
+    const userId = req.params.id;
     const eventId = req.params.eventId;
-    console.log(userName);
+    console.log(userId);
     console.log(eventId);
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found." });
+    }
 
     const event = await Event.findById(eventId);
     if (!event) {
@@ -238,8 +247,10 @@ exports.attendEvent = async (req, res, next) => {
       });
     }
 
-    event.participants.push(userName);
+    event.participants.push(user.name);
+    user.events.items.push({ eventId });
     await event.save();
+    await user.save();
 
     res.status(200).json({
       success: true,
