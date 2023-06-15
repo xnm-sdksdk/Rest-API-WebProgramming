@@ -54,7 +54,11 @@ exports.createReservation = async (req, res, next) => {
 
     res
       .status(200)
-      .json({ success: true, message: "Accommodation reserved successfully." });
+      .json({
+        success: true,
+        message: "Accommodation reserved successfully.",
+        reservation: reservation,
+      });
   } catch (err) {
     res.status(500).json({
       success: false,
