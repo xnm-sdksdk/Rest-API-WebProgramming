@@ -206,6 +206,33 @@ exports.deleteAccommodationById = async (req, res, next) => {
 
 exports.searchAccommodation = async (req, res, next) => {
   try {
+    const { title, location, price, rating, numberOfBeds } = req.query;
+
+    const query = {};
+
+    if (title) {
+      query.title = { $regex: title, $options: "i" };
+    }
+
+    if (location) {
+      query.location = { $regex: location, $options: "i" };
+    }
+
+    if (price) {
+      query.price = { $lte: parseFloat(price) };
+    }
+
+    if (rating) {
+      query.rating = { $gte: parseFloat(rating) };
+    }
+
+    if (numberOfBeds) {
+      query.numberOfBeds = parseInt(numberOfBeds);
+    }
+
+    const accommodations = await Accommodation.find(query);
+
+    res.status(200).json(accommodations);
   } catch (err) {
     res.status(500).json({
       success: false,
