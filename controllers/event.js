@@ -106,6 +106,8 @@ exports.createEvent = async (req, res) => {
 
 exports.updateEventById = async (req, res, next) => {
   try {
+    // if (req.loggedUser.role !== 1) {
+    // }
     const eventId = req.params.id;
     const { title, description, location, date, time, type } = req.body;
     console.log(req.params.id);
@@ -141,6 +143,8 @@ exports.updateEventById = async (req, res, next) => {
 // Delete Event by ID
 exports.deleteEventById = async (req, res, next) => {
   try {
+    // if (req.loggedUser.role !== 1) {
+    // }
     console.log(req.params.id);
     const event = await Event.findByIdAndRemove(req.params.id);
     if (!event) {

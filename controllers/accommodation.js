@@ -117,6 +117,8 @@ exports.createAccommodation = async (req, res, next) => {
 
 exports.updateAccommodationById = async (req, res, next) => {
   try {
+    // if (req.loggedUser.role !== 1) {
+    // }
     const accommodationId = req.params.id;
     const {
       title,
@@ -161,6 +163,8 @@ exports.updateAccommodationById = async (req, res, next) => {
 
 exports.deleteAccommodationById = async (req, res, next) => {
   try {
+    // if (req.loggedUser.role !== 1) {
+    // }
     console.log(req.params.id);
     const accommodation = await Accommodation.findByIdAndRemove(req.params.id);
 
