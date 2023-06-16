@@ -1,5 +1,7 @@
 const User = require("../models/users");
 const db = require("../models/index");
+const accommodation = require("../models/accommodation");
+const accommodation = require("../models/accommodation");
 const Accommodation = db.accommodations;
 
 // Get all Accommodations
@@ -87,7 +89,7 @@ exports.createAccommodation = async (req, res, next) => {
         facilitatorId: req.loggedUser.id,
       });
 
-      const savedAccommodation = await accommodation.save();
+      await accommodation.save();
 
       const response = {
         title: accommodation.title,
@@ -172,22 +174,20 @@ exports.updateAccommodationById = async (req, res, next) => {
 exports.deleteAccommodationById = async (req, res, next) => {
   try {
     console.log(req.params.id);
-    if (req.loggedUser.role !== 1 && req.loggedUser.role !== 3) {
+    const accommodationId = req.params.id;
+    const userRole = req.loggedUser.role;
+    const userId = req.params.id;
+    if (userRole !== 1 && accommodation.userId === userId) {
+      const accommodation = await Accommodation.findByIdAndRemove(
+        accommodationId,
+        { new: true }
+      );
+
       if (!accommodation) {
         console.log(accommodation);
         return res
           .status(404)
           .json({ success: false, message: "Accommodation not found." });
-      }
-      const accommodation = await Accommodation.findByIdAndRemove(
-        req.params.id
-      );
-
-      if (accommodation.facilitatorId.toString() !== req.facilitatorId) {
-        return res.status(403).json({
-          success: false,
-          message: "This accommodation does not belong to you.",
-        });
       }
 
       res.status(202).json({
