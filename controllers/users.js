@@ -127,7 +127,6 @@ exports.loginUser = async (req, res, next) => {
   }
 };
 
-
 // Get All
 exports.getUsers = async (req, res, next) => {
   try {
@@ -170,7 +169,8 @@ exports.getUserById = async (req, res, next) => {
 
 exports.updateUserById = async (req, res, next) => {
   try {
-    if (req.loggedUser.id === req.params.id) {
+    const userRole = req.loggedUser.role;
+    if (userRole === req.params.id) {
       const userId = req.params.id;
       const update = req.body;
 
