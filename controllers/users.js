@@ -162,7 +162,7 @@ exports.getUserById = async (req, res, next) => {
 exports.updateUserById = async (req, res, next) => {
   try {
     const userRole = req.loggedUser.role;
-    if (userRole === req.params.id) {
+    if (userRole === req.params.id && userRole === 3) {
       const userId = req.params.id;
       const update = req.body;
 
@@ -188,22 +188,17 @@ exports.updateUserById = async (req, res, next) => {
 
 exports.deleteUserById = async (req, res, next) => {
   try {
-    const userRole = req.loggedUser.role;
-    if (userRole !== 1 && userRole !==2) {
-      console.log(req.params.id);
-      const user = await User.findByIdAndDelete(req.params.id);
-      console.log(user);
-      if (!user) {
-        return res
-          .status(404)
-          .json({ success: false, message: "User not found!" });
-      }
-      res
-        .status(202)
-        .json({ success: true, message: "User deleted successfully." });
-    } else {
-      res.status(403).json({ success: false, message: "Permission denied." });
+    console.log(req.params.id);
+    const user = await User.findByIdAndDelete(req.params.id);
+    console.log(user);
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found!" });
     }
+    res
+      .status(202)
+      .json({ success: true, message: "User deleted successfully." });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
