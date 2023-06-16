@@ -1,8 +1,6 @@
-const User = require("../models/users");
 const db = require("../models/index");
-const accommodation = require("../models/accommodation");
-const accommodation = require("../models/accommodation");
 const Accommodation = db.accommodations;
+const User = db.users;
 
 // Get all Accommodations
 
