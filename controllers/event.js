@@ -162,7 +162,7 @@ exports.deleteEventById = async (req, res, next) => {
       });
     }
 
-    if (userRole === 1 && event.userId === userId) {
+    if (userRole !== 1 && event.userId === userId) {
       console.log(req.params.id);
 
       res.status(202).json({
