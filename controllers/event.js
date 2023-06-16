@@ -215,12 +215,13 @@ exports.searchEvent = async (req, res, next) => {
 
 exports.attendEvent = async (req, res, next) => {
   try {
-    const userId = req.params.userId;
-    const eventId = req.params.eventId;
-    console.log(userId);
+    const userId = req.params.id;
+    const eventId = req.params.id;
+    console.log("User ID: " + userId);
     console.log(eventId);
 
     const user = await User.findById(userId);
+    console.log("User: " + user);
 
     if (!user) {
       return res
