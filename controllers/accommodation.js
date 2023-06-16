@@ -84,7 +84,7 @@ exports.createAccommodation = async (req, res, next) => {
         number_beds: number_beds,
         room_type: room_type,
         amenities: amenities,
-        facilitatorId: req.facilitatorId,
+        facilitatorId: req.params.id,
       });
 
       const savedAccommodation = await accommodation.save();
