@@ -89,9 +89,9 @@ exports.createAccommodation = async (req, res, next) => {
 
       const savedAccommodation = await accommodation.save();
 
-      const user = await User.findOne({ _id: req.facilitatorId });
+      const user = await User.findById(req.params.id);
       if (user) {
-        user.accommodations.push(savedAccommodation._id);
+        user.accommodations.push(savedAccommodation.id);
         await user.save();
       }
 
