@@ -142,8 +142,6 @@ exports.updateEventById = async (req, res, next) => {
 exports.deleteEventById = async (req, res, next) => {
   try {
     const eventId = req.params.id;
-    const userRole = req.loggedUser.role;
-    const userId = req.params.id;
 
     const event = await Event.findByIdAndRemove(eventId, { new: true });
 
@@ -155,14 +153,10 @@ exports.deleteEventById = async (req, res, next) => {
       });
     }
 
-    if (userRole !== 1 && event.userId === userId) {
-      res.status(202).json({
-        success: true,
-        message: "Event deleted successfully.",
-      });
-    } else {
-      res.status(403).json({ success: false, message: "Permission denied." });
-    }
+    res.status(202).json({
+      success: true,
+      message: "Event deleted successfully.",
+    });
   } catch (err) {
     res.status(500).json({
       success: false,

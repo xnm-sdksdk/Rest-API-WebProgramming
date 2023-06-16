@@ -131,8 +131,6 @@ exports.updateAccommodationById = async (req, res, next) => {
       room_type,
       amenities,
     } = req.body;
-    const userRole = req.loggedUser.role;
-    const userId = req.loggedUser.id;
 
     const accommodation = await Accommodation.findByIdAndUpdate(
       accommodationId,
@@ -145,22 +143,18 @@ exports.updateAccommodationById = async (req, res, next) => {
         .json({ success: false, message: "Accommodations not found." });
     }
 
-    if (userRole !== 1 && accommodation.userId === userId) {
-      accommodation.title = title;
-      accommodation.description = description;
-      accommodation.location = location;
-      accommodation.price = price;
-      accommodation.rating = rating;
-      accommodation.number_beds = number_beds;
-      accommodation.room_type = room_type;
-      accommodation.amenities = amenities;
+    accommodation.title = title;
+    accommodation.description = description;
+    accommodation.location = location;
+    accommodation.price = price;
+    accommodation.rating = rating;
+    accommodation.number_beds = number_beds;
+    accommodation.room_type = room_type;
+    accommodation.amenities = amenities;
 
-      await accommodation.save();
+    await accommodation.save();
 
-      res.status(200).json({ success: true, message: accommodation });
-    } else {
-      res.status(403).json({ success: false, message: "Permission denied." });
-    }
+    res.status(200).json({ success: true, message: accommodation });
   } catch (err) {
     res.status(500).json({
       success: false,
@@ -173,28 +167,22 @@ exports.deleteAccommodationById = async (req, res, next) => {
   try {
     console.log(req.params.id);
     const accommodationId = req.params.id;
-    const userRole = req.loggedUser.role;
-    const userId = req.params.id;
-    if (userRole !== 1 && accommodation.userId === userId) {
-      const accommodation = await Accommodation.findByIdAndRemove(
-        accommodationId,
-        { new: true }
-      );
+    const accommodation = await Accommodation.findByIdAndRemove(
+      accommodationId,
+      { new: true }
+    );
 
-      if (!accommodation) {
-        console.log(accommodation);
-        return res
-          .status(404)
-          .json({ success: false, message: "Accommodation not found." });
-      }
-
-      res.status(202).json({
-        success: true,
-        message: "Accommodation deleted successfully.",
-      });
-    } else {
-      res.status(403).json({ success: false, message: "Permission denied." });
+    if (!accommodation) {
+      console.log(accommodation);
+      return res
+        .status(404)
+        .json({ success: false, message: "Accommodation not found." });
     }
+
+    res.status(202).json({
+      success: true,
+      message: "Accommodation deleted successfully.",
+    });
   } catch (err) {
     res.status(500).json({
       success: false,
