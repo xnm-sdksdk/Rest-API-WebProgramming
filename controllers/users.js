@@ -172,6 +172,7 @@ exports.updateUserById = async (req, res, next) => {
         .json({ success: false, message: "User not found." });
     }
 
+    await user.save();
     res.status(200).json({ success: true, user });
   } catch (err) {
     res.status(500).json({
