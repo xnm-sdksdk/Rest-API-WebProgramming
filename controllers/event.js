@@ -215,9 +215,8 @@ exports.searchEvent = async (req, res, next) => {
 
 exports.attendEvent = async ({ params }, res, next) => {
   try {
-    const { userId, eventId } = params;
-    // const userId = req.params.id;
-    // const eventId = req.params.id;
+    const userId = req.params.id;
+    const eventId = req.params.id;
     console.log("User ID: " + userId);
     console.log("Event ID: " + eventId);
 
