@@ -112,7 +112,7 @@ exports.updateEventById = async (req, res, next) => {
     const userRole = req.loggedUser.role;
     const userId = req.loggedUser.id;
 
-    const event = await Event.findByIdAndUpdate(eventId, { new: true });
+    const event = await Event.findById(eventId, { new: true });
 
     if (!event) {
       return res
