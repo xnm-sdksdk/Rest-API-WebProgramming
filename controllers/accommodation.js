@@ -136,16 +136,6 @@ exports.updateAccommodationById = async (req, res, next) => {
 
     const accommodation = await Accommodation.findByIdAndUpdate(
       accommodationId,
-      {
-        title,
-        description,
-        location,
-        price,
-        rating,
-        number_beds,
-        room_type,
-        amenities,
-      },
       { new: true }
     );
 
@@ -154,6 +144,7 @@ exports.updateAccommodationById = async (req, res, next) => {
         .status(404)
         .json({ success: false, message: "Accommodations not found." });
     }
+
     if (userRole !== 1 && accommodation.userId === userId) {
       accommodation.title = title;
       accommodation.description = description;

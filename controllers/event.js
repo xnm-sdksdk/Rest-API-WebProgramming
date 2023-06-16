@@ -120,7 +120,7 @@ exports.updateEventById = async (req, res, next) => {
         .json({ success: false, message: "Event not found." });
     }
 
-    if (userRole != 1 && event.userId === userId) {
+    if (userRole !== 1 && event.userId === userId) {
       event.title = title;
       event.description = description;
       event.location = location;
@@ -148,16 +148,22 @@ exports.updateEventById = async (req, res, next) => {
 // Delete Event by ID
 exports.deleteEventById = async (req, res, next) => {
   try {
-    if (req.loggedUser.role !== 1) {
+    const eventId = req.params.id;
+    const userRole = req.loggedUser.role;
+    const userId = req.params.id;
+
+    const event = await Event.findByIdAndRemove(eventId, { new: true });
+
+    if (!event) {
+      console.log(event);
+      return res.status(404).json({
+        success: false,
+        message: "Event not found.",
+      });
+    }
+
+    if (userRole !== 1 && event.userId === userId) {
       console.log(req.params.id);
-      const event = await Event.findByIdAndRemove(req.params.id);
-      if (!event) {
-        console.log(event);
-        return res.status(404).json({
-          success: false,
-          message: "Event not found.",
-        });
-      }
 
       res.status(202).json({
         success: true,
