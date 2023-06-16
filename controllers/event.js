@@ -215,7 +215,7 @@ exports.searchEvent = async (req, res, next) => {
 
 exports.attendEvent = async (req, res, next) => {
   try {
-    const userId = await User.findById(req.params.id);
+    const userId = await User.findById(req.params.userId);
     const eventId = await Event.findById(req.params.id);
     console.log("User: " + userId);
     console.log("Event: " + eventId);
