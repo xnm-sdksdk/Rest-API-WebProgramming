@@ -87,7 +87,7 @@ exports.createAccommodation = async (req, res, next) => {
         facilitatorId: req.loggedUser.id,
       });
 
-      await accommodation.save();
+      const savedAccommodation = await accommodation.save();
 
       const response = {
         title: accommodation.title,
