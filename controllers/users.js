@@ -140,21 +140,17 @@ exports.getUsers = async (req, res, next) => {
 // Get single user
 exports.getUserById = async (req, res, next) => {
   try {
-    if (req.loggedUser.role !== 1 && req.loggedUser.role !== 2) {
-      const user = await User.findById(req.params.id)
-        .populate("accommodations")
-        .populate("events.items.eventId");
+    const user = await User.findById(req.params.id)
+      .populate("accommodations")
+      .populate("events.items.eventId");
 
-      if (!user) {
-        return res
-          .status(404)
-          .json({ success: false, message: "User not found!" });
-      }
-
-      res.status(200).json({ user });
-    } else {
-      res.status(403).json({ success: false, message: "Permission denied." });
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found!" });
     }
+
+    res.status(200).json({ user });
   } catch (err) {
     res.status(500).json({
       success: false,
@@ -192,7 +188,8 @@ exports.updateUserById = async (req, res, next) => {
 
 exports.deleteUserById = async (req, res, next) => {
   try {
-    if (req.loggedUser.role !== 1 && req.loggedUser.role !== 2) {
+    const userRole = req.loggedUser.role;
+    if (userRole !== 1 && userRole !==2) {
       console.log(req.params.id);
       const user = await User.findByIdAndDelete(req.params.id);
       console.log(user);
