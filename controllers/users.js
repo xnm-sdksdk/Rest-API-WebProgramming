@@ -22,15 +22,6 @@ exports.registerUser = async (req, res) => {
         .json({ success: false, message: "All fields are mandatory." });
     }
 
-    // const minLength = 5;
-
-    // if (password.length <= minLength) {
-    //   return res.status(400).json({
-    //     success: false,
-    //     message: "Password must have more then 5 characters.",
-    //   });
-    // }
-
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!emailRegex.test(email)) {
@@ -142,8 +133,12 @@ exports.refreshToken = (req, res, next) => {};
 // Get All
 exports.getUsers = async (req, res, next) => {
   try {
-    const users = await User.find();
-    res.status(200).json(users);
+    if (req.loggedUser.role !== 1 && req.loggedUser.role !== 2) {
+      const users = await User.find();
+      res.status(200).json(users);
+    } else {
+      res.status(403).json({ success: false, message: "Permission denied." });
+    }
   } catch (err) {
     res.status(500).json({ err: "Users not found!" });
   }
@@ -152,17 +147,21 @@ exports.getUsers = async (req, res, next) => {
 // Get single user
 exports.getUserById = async (req, res, next) => {
   try {
-    const user = await User.findById(req.params.id)
-      .populate("accommodations")
-      .populate("events.items.eventId");
+    if (req.loggedUser.role !== 1 && req.loggedUser.role !== 2) {
+      const user = await User.findById(req.params.id)
+        .populate("accommodations")
+        .populate("events.items.eventId");
 
-    if (!user) {
-      return res
-        .status(404)
-        .json({ success: false, message: "User not found!" });
+      if (!user) {
+        return res
+          .status(404)
+          .json({ success: false, message: "User not found!" });
+      }
+
+      res.status(200).json({ user });
+    } else {
+      res.status(403).json({ success: false, message: "Permission denied." });
     }
-
-    res.status(200).json({ user });
   } catch (err) {
     res.status(500).json({
       success: false,
@@ -173,18 +172,22 @@ exports.getUserById = async (req, res, next) => {
 
 exports.updateUserById = async (req, res, next) => {
   try {
-    const userId = req.params.id;
-    const update = req.body;
+    if (req.loggedUser.id === req.params.id) {
+      const userId = req.params.id;
+      const update = req.body;
 
-    const user = await User.findByIdAndUpdate(userId, update, { new: true }); // Force the return in the response
+      const user = await User.findByIdAndUpdate(userId, update, { new: true }); // Force the return in the response
 
-    if (!user) {
-      return res
-        .status(404)
-        .json({ success: false, message: "User not found." });
+      if (!user) {
+        return res
+          .status(404)
+          .json({ success: false, message: "User not found." });
+      }
+
+      res.status(200).json({ success: true, user });
+    } else {
+      res.status(403).json({ success: false, message: "Permission denied." });
     }
-
-    res.status(200).json({ success: true, user });
   } catch (err) {
     res.status(500).json({
       success: false,
@@ -195,21 +198,21 @@ exports.updateUserById = async (req, res, next) => {
 
 exports.deleteUserById = async (req, res, next) => {
   try {
-    /*
-    Verification for Admin
-    */
-
-    console.log(req.params.id);
-    const user = await User.findByIdAndDelete(req.params.id);
-    console.log(user);
-    if (!user) {
-      return res
-        .status(404)
-        .json({ success: false, message: "User not found!" });
+    if (req.loggedUser.role !== 1 && req.loggedUser.role !== 2) {
+      console.log(req.params.id);
+      const user = await User.findByIdAndDelete(req.params.id);
+      console.log(user);
+      if (!user) {
+        return res
+          .status(404)
+          .json({ success: false, message: "User not found!" });
+      }
+      res
+        .status(202)
+        .json({ success: true, message: "User deleted successfully." });
+    } else {
+      res.status(403).json({ success: false, message: "Permission denied." });
     }
-    res
-      .status(202)
-      .json({ success: true, message: "User deleted successfully." });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
