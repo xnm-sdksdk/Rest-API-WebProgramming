@@ -26,12 +26,4 @@ router.route("/:id").put(usersController.updateUserById);
 // DELETE Users BY ID
 router.route("/:id").delete(usersController.deleteUserById);
 
-// POST Show interest in an Event
-router.route("/:userId/interests/:eventId").post(usersController.addInterest);
-
-// DELETE Remove interest in an Event
-router
-  .route("/:userId/interests/:eventId")
-  .delete(usersController.removeInterest);
-
 module.exports = router;
