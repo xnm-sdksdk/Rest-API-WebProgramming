@@ -104,11 +104,11 @@ exports.createEvent = async (req, res) => {
 };
 
 // Update Event By ID
-
+/*
 exports.updateEventById = async (req, res, next) => {
   try {
     const eventId = req.params.id;
-    if (req.loggedUser.role !== 1 || req.loggedUser.role !== 3 || req.loggedUser.id === req.params.id) {
+    if (req.loggedUser.role !== 1 || req.loggedUser.role !== 3) {
         const { title, description, location, date, time, type } = req.body;
         console.log(req.params.id);
 
@@ -142,6 +142,44 @@ exports.updateEventById = async (req, res, next) => {
     });
   }
 };
+*/
+
+exports.updateEventById = async (req, res, next) => {
+  try {
+    const eventId = req.params.id;
+    const { title, description, location, date, time, type } = req.body;
+    const userRole = req.loggedUser.role;
+    const userId = req.loggedUser.id;
+
+    const event = await Event.findById(eventId);
+
+    if (!event) {
+      return res.status(404).json({ success: false, message: "Event not found." });
+    }
+
+    if (userRole === 1 || userRole === 3 || event.userId === userId) {
+      event.title = title;
+      event.description = description;
+      event.location = location;
+      event.date = date;
+      event.time = time;
+      event.type = type;
+
+      const updatedEvent = await event.save();
+
+      // Return a simplified response with a success message
+      res.status(200).json({ success: true, message: "Event updated successfully." });
+    } else {
+      res.status(403).json({ success: false, message: "Permission denied." });
+    }
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message || "Something went wrong. Please try again later",
+    });
+  }
+};
+
 
 // Delete Event by ID
 exports.deleteEventById = async (req, res, next) => {
