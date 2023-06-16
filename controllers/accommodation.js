@@ -90,8 +90,9 @@ exports.createAccommodation = async (req, res, next) => {
       const savedAccommodation = await accommodation.save();
 
       const user = await User.findById(req.params.id);
+      console.log(user);
       if (user) {
-        user.accommodations.push(savedAccommodation.id);
+        user.accommodations.push(savedAccommodation.user);
         await user.save();
       }
 
