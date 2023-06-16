@@ -213,7 +213,7 @@ exports.searchEvent = async (req, res, next) => {
 
 // Post Attend Event
 
-exports.attendEvent = async (req, res, next) => {
+exports.attendEvent = async ({ params }, res, next) => {
   try {
     const { userId, eventId } = params;
     // const userId = req.params.id;
