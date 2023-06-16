@@ -37,11 +37,6 @@ exports.createReservation = async (req, res, next) => {
         message: "Accommodation is already reserved for the given dates.",
       });
     }
-
-    // if (req.loggedUser.role !== 1) {
-
-    // }
-
     const reservation = new Reservation({
       accommodation: accommodationId,
       check_in_date: checkInDate,
@@ -92,7 +87,7 @@ exports.getReservationById = async (req, res, next) => {
       });
     }
 
-    res.status(500).json({ success: true, message: reservation });
+    res.status(200).json({ success: true, message: reservation });
   } catch (err) {
     res.status(500).json({
       success: false,
@@ -106,20 +101,23 @@ exports.updateReservationById = async (req, res, next) => {
     const reservationId = req.params.id;
     const { accommodationId, checkInDate, checkOutDate, numberGuests } =
       req.body;
-    const userRole = req.loggedUser.role;
-    const userId = req.loggedUser.id;
 
-    const reservation = await Reservation.findByIdAndUpdate(
-      reservationId,
-      {},
-      { new: true }
-    );
+    const reservation = await Reservation.findByIdAndUpdate(reservationId, {
+      new: true,
+    });
 
     if (!reservation) {
       return res
         .status(404)
         .json({ success: false, message: "Reservation not found." });
     }
+
+    reservation.accommodationId = accommodationId;
+    reservation.checkInDate = checkInDate;
+    reservation.checkOutDate = checkOutDate;
+    reservation.numberGuests = numberGuests;
+
+    await reservation.save();
 
     res.status(200).json({ success: false, message: reservation });
   } catch (err) {
@@ -132,9 +130,9 @@ exports.updateReservationById = async (req, res, next) => {
 
 exports.deleteReservationById = async (req, res, next) => {
   try {
-    // if (req.loggedUser.role !== 1) {
-    // }
-    const reservation = await Reservation.findByIdAndRemove(req.params.id);
+    const reservationId = req.params.id;
+
+    const reservation = await Reservation.findByIdAndRemove(reservationId);
     if (!reservation) {
       return res
         .status(404)
