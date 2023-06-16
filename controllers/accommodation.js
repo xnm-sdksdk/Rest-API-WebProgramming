@@ -74,7 +74,7 @@ exports.createAccommodation = async (req, res, next) => {
       });
     }
 
-    if (req.loggedUser.role !== 1 && req.loggedUser.role !== 3) {
+    if (req.loggedUser.role !== 1) {
       const accommodation = new Accommodation({
         title: title,
         description: description,

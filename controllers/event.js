@@ -76,9 +76,8 @@ exports.createEvent = async (req, res) => {
         participants: [],
       });
 
-      console.log(event + "First Log");
       await event.save();
-      console.log(event + "Second Log");
+
       const response = {
         title: event.title,
         description: event.description,
