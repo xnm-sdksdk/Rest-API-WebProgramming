@@ -104,45 +104,6 @@ exports.createEvent = async (req, res) => {
 };
 
 // Update Event By ID
-/*
-exports.updateEventById = async (req, res, next) => {
-  try {
-    const eventId = req.params.id;
-    if (req.loggedUser.role !== 1 || req.loggedUser.role !== 3) {
-        const { title, description, location, date, time, type } = req.body;
-        console.log(req.params.id);
-
-        const event = await Event.findByIdAndUpdate(
-          eventId,
-          {
-            title,
-            description,
-            location,
-            date,
-            time,
-            type,
-          },
-          { new: true }
-        );
-
-        if (!event) {
-          return res
-            .status(404)
-            .json({ success: false, message: "Event not found." });
-        }
-
-        res.status(200).json({ success: true, message: event });
-    } else {
-      res.status(403).json({ success: false, message: "Permission denied." });
-    }
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: err.message || "Something went wrong. Please try again later",
-    });
-  }
-};
-*/
 
 exports.updateEventById = async (req, res, next) => {
   try {
