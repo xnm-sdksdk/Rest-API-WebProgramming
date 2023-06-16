@@ -127,8 +127,6 @@ exports.loginUser = async (req, res, next) => {
   }
 };
 
-//! To Be Done
-exports.refreshToken = (req, res, next) => {};
 
 // Get All
 exports.getUsers = async (req, res, next) => {

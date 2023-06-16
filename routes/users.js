@@ -11,9 +11,6 @@ router.route("/").post(usersController.registerUser);
 // POST Login User
 router.route("/login").post(usersController.loginUser);
 
-// PUT Refresh auth token
-router.route("/refresh-token").put(usersController.refreshToken);
-
 // GET ALL Users
 router.route("/").get(usersController.getUsers);
 

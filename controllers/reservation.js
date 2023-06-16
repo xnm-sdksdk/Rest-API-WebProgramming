@@ -52,13 +52,11 @@ exports.createReservation = async (req, res, next) => {
 
     await reservation.save();
 
-    res
-      .status(200)
-      .json({
-        success: true,
-        message: "Accommodation reserved successfully.",
-        reservation: reservation,
-      });
+    res.status(200).json({
+      success: true,
+      message: "Accommodation reserved successfully.",
+      reservation: reservation,
+    });
   } catch (err) {
     res.status(500).json({
       success: false,
@@ -105,25 +103,28 @@ exports.getReservationById = async (req, res, next) => {
 
 exports.updateReservationById = async (req, res, next) => {
   try {
-    // if (req.loggedUser.role !== 1) {
-    // }
-    const reservationId = req.params.id;
+    if (req.loggedUser.role !== 1) {
+      if (req.loggedUser.id === req.user.id) {
+        const reservationId = req.params.id;
 
-    const {} = req.body;
+        const {} = req.body;
 
-    const reservation = await Reservation.findByIdAndUpdate(
-      reservationId,
-      {},
-      { new: true }
-    );
+        const reservation = await Reservation.findByIdAndUpdate(
+          reservationId,
+          {},
+          { new: true }
+        );
 
-    if (!reservation) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Reservation not found." });
+        if (!reservation) {
+          return res
+            .status(404)
+            .json({ success: false, message: "Reservation not found." });
+        }
+
+        res.status(200).json({ success: false, message: reservation });
+      }
+    } else {
     }
-
-    res.status(200).json({ success: false, message: reservation });
   } catch (err) {
     res.status(500).json({
       success: false,
