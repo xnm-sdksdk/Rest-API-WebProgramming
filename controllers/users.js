@@ -161,23 +161,18 @@ exports.getUserById = async (req, res, next) => {
 
 exports.updateUserById = async (req, res, next) => {
   try {
-    const userRole = req.loggedUser.role;
-    if (userRole === req.params.id && userRole === 3) {
-      const userId = req.params.id;
-      const update = req.body;
+    const userId = req.params.id;
+    const update = req.body;
 
-      const user = await User.findByIdAndUpdate(userId, update, { new: true }); // Force the return in the response
+    const user = await User.findByIdAndUpdate(userId, update, { new: true }); // Force the return in the response
 
-      if (!user) {
-        return res
-          .status(404)
-          .json({ success: false, message: "User not found." });
-      }
-
-      res.status(200).json({ success: true, user });
-    } else {
-      res.status(403).json({ success: false, message: "Permission denied." });
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found." });
     }
+
+    res.status(200).json({ success: true, user });
   } catch (err) {
     res.status(500).json({
       success: false,
