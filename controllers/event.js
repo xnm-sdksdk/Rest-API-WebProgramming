@@ -108,8 +108,6 @@ exports.updateEventById = async (req, res, next) => {
   try {
     const eventId = req.params.id;
     const { title, description, location, date, time, type } = req.body;
-    const userRole = req.loggedUser.role;
-    const userId = req.loggedUser.id;
 
     const event = await Event.findByIdAndUpdate(eventId, { new: true });
 
@@ -119,23 +117,19 @@ exports.updateEventById = async (req, res, next) => {
         .json({ success: false, message: "Event not found." });
     }
 
-    if (userRole !== 1 && event.userId === userId) {
-      event.title = title;
-      event.description = description;
-      event.location = location;
-      event.date = date;
-      event.time = time;
-      event.type = type;
+    event.title = title;
+    event.description = description;
+    event.location = location;
+    event.date = date;
+    event.time = time;
+    event.type = type;
 
-      await event.save();
+    await event.save();
 
-      res.status(200).json({
-        success: true,
-        message: event,
-      });
-    } else {
-      res.status(403).json({ success: false, message: "Permission denied." });
-    }
+    res.status(200).json({
+      success: true,
+      message: event,
+    });
   } catch (err) {
     res.status(500).json({
       success: false,
