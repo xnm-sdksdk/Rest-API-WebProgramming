@@ -41,13 +41,13 @@ exports.createEvent = async (req, res) => {
     const { title, description, location, date, time, type } = req.body;
 
     if (req.loggedUser.role !== 1) {
+      const existTitle = await Event.findOne({ title });
+
       if (!title) {
         return res
           .status(400)
           .json({ success: false, message: "Title field is mandatory" });
       }
-
-      const existTitle = await Event.findOne({ title });
 
       if (existTitle) {
         return res.status(400).json({
