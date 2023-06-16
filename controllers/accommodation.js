@@ -131,28 +131,40 @@ exports.updateAccommodationById = async (req, res, next) => {
       room_type,
       amenities,
     } = req.body;
+    const userRole = req.loggedUser.role;
+    const userId = req.loggedUser.id;
 
-    if (req.loggedUser.role !== 1 && req.loggedUser.role !== 3) {
-      const accommodation = await Accommodation.findByIdAndUpdate(
-        accommodationId,
-        {
-          title,
-          description,
-          location,
-          price,
-          rating,
-          number_beds,
-          room_type,
-          amenities,
-        },
-        { new: true }
-      );
+    const accommodation = await Accommodation.findByIdAndUpdate(
+      accommodationId,
+      {
+        title,
+        description,
+        location,
+        price,
+        rating,
+        number_beds,
+        room_type,
+        amenities,
+      },
+      { new: true }
+    );
 
-      if (!accommodation) {
-        return res
-          .status(404)
-          .json({ success: false, message: "Accommodations not found." });
-      }
+    if (!accommodation) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Accommodations not found." });
+    }
+    if (userRole !== 1 && accommodation.userId === userId) {
+      accommodation.title = title;
+      accommodation.description = description;
+      accommodation.location = location;
+      accommodation.price = price;
+      accommodation.rating = rating;
+      accommodation.number_beds = number_beds;
+      accommodation.room_type = room_type;
+      accommodation.amenities = amenities;
+
+      await accommodation.save();
 
       res.status(200).json({ success: true, message: accommodation });
     } else {

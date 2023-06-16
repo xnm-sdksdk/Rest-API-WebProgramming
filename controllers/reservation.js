@@ -103,28 +103,25 @@ exports.getReservationById = async (req, res, next) => {
 
 exports.updateReservationById = async (req, res, next) => {
   try {
-    if (req.loggedUser.role !== 1) {
-      if (req.loggedUser.id === req.user.id) {
-        const reservationId = req.params.id;
+    const reservationId = req.params.id;
+    const { accommodationId, checkInDate, checkOutDate, numberGuests } =
+      req.body;
+    const userRole = req.loggedUser.role;
+    const userId = req.loggedUser.id;
 
-        const {} = req.body;
+    const reservation = await Reservation.findByIdAndUpdate(
+      reservationId,
+      {},
+      { new: true }
+    );
 
-        const reservation = await Reservation.findByIdAndUpdate(
-          reservationId,
-          {},
-          { new: true }
-        );
-
-        if (!reservation) {
-          return res
-            .status(404)
-            .json({ success: false, message: "Reservation not found." });
-        }
-
-        res.status(200).json({ success: false, message: reservation });
-      }
-    } else {
+    if (!reservation) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Reservation not found." });
     }
+
+    res.status(200).json({ success: false, message: reservation });
   } catch (err) {
     res.status(500).json({
       success: false,
