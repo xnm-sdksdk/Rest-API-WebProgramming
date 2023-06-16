@@ -40,31 +40,31 @@ exports.createEvent = async (req, res) => {
   try {
     const { title, description, location, date, time, type } = req.body;
 
-    if (!title) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Title field is mandatory" });
-    }
+    if (req.loggedUser.role !== 1 && req.loggedUser.role !== 3) {
+      if (!title) {
+        return res
+          .status(400)
+          .json({ success: false, message: "Title field is mandatory" });
+      }
 
-    const existTitle = await Event.findOne({ title });
+      const existTitle = await Event.findOne({ title });
 
-    if (existTitle) {
-      return res.status(400).json({
-        success: false,
-        message: "The Event with the given title is already being used.",
-      });
-    }
+      if (existTitle) {
+        return res.status(400).json({
+          success: false,
+          message: "The Event with the given title is already being used.",
+        });
+      }
 
-    let eventDate = new Date(date);
+      let eventDate = new Date(date);
 
-    if (eventDate < Date.now()) {
-      return res.status(400).json({
-        success: false,
-        message: "The Event with the given date is invalid.",
-      });
-    }
+      if (eventDate < Date.now()) {
+        return res.status(400).json({
+          success: false,
+          message: "The Event with the given date is invalid.",
+        });
+      }
 
-    if (req.loggedUser.role !== 1) {
       const event = new Event({
         title: title,
         description: description,
@@ -107,32 +107,34 @@ exports.createEvent = async (req, res) => {
 
 exports.updateEventById = async (req, res, next) => {
   try {
-    // if (req.loggedUser.role !== 1) {
-    // }
     const eventId = req.params.id;
-    const { title, description, location, date, time, type } = req.body;
-    console.log(req.params.id);
+    if (req.loggedUser.role !== 1 && req.loggedUser.role !== 3) {
+      const { title, description, location, date, time, type } = req.body;
+      console.log(req.params.id);
 
-    const event = await Event.findByIdAndUpdate(
-      eventId,
-      {
-        title,
-        description,
-        location,
-        date,
-        time,
-        type,
-      },
-      { new: true }
-    );
+      const event = await Event.findByIdAndUpdate(
+        eventId,
+        {
+          title,
+          description,
+          location,
+          date,
+          time,
+          type,
+        },
+        { new: true }
+      );
 
-    if (!event) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Event not found." });
+      if (!event) {
+        return res
+          .status(404)
+          .json({ success: false, message: "Event not found." });
+      }
+
+      res.status(200).json({ success: true, message: event });
+    } else {
+      res.status(403).json({ success: false, message: "Permission denied." });
     }
-
-    res.status(200).json({ success: true, message: event });
   } catch (err) {
     res.status(500).json({
       success: false,
@@ -144,22 +146,24 @@ exports.updateEventById = async (req, res, next) => {
 // Delete Event by ID
 exports.deleteEventById = async (req, res, next) => {
   try {
-    // if (req.loggedUser.role !== 1) {
-    // }
-    console.log(req.params.id);
-    const event = await Event.findByIdAndRemove(req.params.id);
-    if (!event) {
-      console.log(event);
-      return res.status(404).json({
-        success: false,
-        message: "Event not found.",
-      });
-    }
+    if (req.loggedUser.role !== 1) {
+      console.log(req.params.id);
+      const event = await Event.findByIdAndRemove(req.params.id);
+      if (!event) {
+        console.log(event);
+        return res.status(404).json({
+          success: false,
+          message: "Event not found.",
+        });
+      }
 
-    res.status(202).json({
-      success: true,
-      message: "Event deleted successfully.",
-    });
+      res.status(202).json({
+        success: true,
+        message: "Event deleted successfully.",
+      });
+    } else {
+      res.status(403).json({ success: false, message: "Permission denied." });
+    }
   } catch (err) {
     res.status(500).json({
       success: false,

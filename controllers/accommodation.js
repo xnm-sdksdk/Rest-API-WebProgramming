@@ -74,7 +74,7 @@ exports.createAccommodation = async (req, res, next) => {
       });
     }
 
-    if (req.loggedUser.role !== 1) {
+    if (req.loggedUser.role !== 1 && req.loggedUser.role !== 3) {
       const accommodation = new Accommodation({
         title: title,
         description: description,
@@ -126,8 +126,6 @@ exports.createAccommodation = async (req, res, next) => {
 
 exports.updateAccommodationById = async (req, res, next) => {
   try {
-    // if (req.loggedUser.role !== 1) {
-    // }
     const accommodationId = req.params.id;
     const {
       title,
@@ -140,28 +138,32 @@ exports.updateAccommodationById = async (req, res, next) => {
       amenities,
     } = req.body;
 
-    const accommodation = await Accommodation.findByIdAndUpdate(
-      accommodationId,
-      {
-        title,
-        description,
-        location,
-        price,
-        rating,
-        number_beds,
-        room_type,
-        amenities,
-      },
-      { new: true }
-    );
+    if (req.loggedUser.role !== 1 && req.loggedUser.role !== 3) {
+      const accommodation = await Accommodation.findByIdAndUpdate(
+        accommodationId,
+        {
+          title,
+          description,
+          location,
+          price,
+          rating,
+          number_beds,
+          room_type,
+          amenities,
+        },
+        { new: true }
+      );
 
-    if (!accommodation) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Accommodations not found." });
+      if (!accommodation) {
+        return res
+          .status(404)
+          .json({ success: false, message: "Accommodations not found." });
+      }
+
+      res.status(200).json({ success: true, message: accommodation });
+    } else {
+      res.status(403).json({ success: false, message: "Permission denied." });
     }
-
-    res.status(200).json({ success: true, message: accommodation });
   } catch (err) {
     res.status(500).json({
       success: false,
@@ -172,30 +174,32 @@ exports.updateAccommodationById = async (req, res, next) => {
 
 exports.deleteAccommodationById = async (req, res, next) => {
   try {
-    // if (req.loggedUser.role !== 1) {
-    // }
     console.log(req.params.id);
-    const accommodation = await Accommodation.findByIdAndRemove(req.params.id);
+    if (req.loggedUser.role !== 1 && req.loggedUser.role !== 3) {
+      if (!accommodation) {
+        console.log(accommodation);
+        return res
+          .status(404)
+          .json({ success: false, message: "Accommodation not found." });
+      }
+      const accommodation = await Accommodation.findByIdAndRemove(
+        req.params.id
+      );
 
-    if (!accommodation) {
-      console.log(accommodation);
-      return res
-        .status(404)
-        .json({ success: false, message: "Accommodation not found." });
+      if (accommodation.facilitatorId.toString() !== req.facilitatorId) {
+        return res.status(403).json({
+          success: false,
+          message: "This accommodation does not belong to you.",
+        });
+      }
+
+      res.status(202).json({
+        success: true,
+        message: "Accommodation deleted successfully.",
+      });
+    } else {
+      res.status(403).json({ success: false, message: "Permission denied." });
     }
-
-    // if (accommodation.facilitatorId.toString() !== req.facilitatorId) {
-    //   return res
-    //     .status(403)
-    //     .json({
-    //       success: false,
-    //       message: "This accommodation does not belong to you.",
-    //     });
-    // }
-
-    res
-      .status(202)
-      .json({ success: true, message: "Accommodation deleted successfully." });
   } catch (err) {
     res.status(500).json({
       success: false,
@@ -212,28 +216,23 @@ exports.searchAccommodation = async (req, res, next) => {
 
     if (title) {
       query.title = { $regex: title, $options: "i" };
-    } else {
-      return res.status(400).json({
-        success: false,
-        message: "Please provide a title for the accommodation search.",
-      });
     }
 
-    // if (location) {
-    //   query.location = { $regex: location, $options: "i" };
-    // }
+    if (location) {
+      query.location = { $regex: location, $options: "i" };
+    }
 
-    // if (price) {
-    //   query.price = { $lte: parseFloat(price) };
-    // }
+    if (price) {
+      query.price = { $lte: parseFloat(price) };
+    }
 
-    // if (rating) {
-    //   query.rating = { $gte: parseFloat(rating) };
-    // }
+    if (rating) {
+      query.rating = { $gte: parseFloat(rating) };
+    }
 
-    // if (numberOfBeds) {
-    //   query.numberOfBeds = parseInt(numberOfBeds);
-    // }
+    if (numberOfBeds) {
+      query.numberOfBeds = parseInt(numberOfBeds);
+    }
 
     const accommodations = await Accommodation.find(query);
 

@@ -130,9 +130,9 @@ exports.loginUser = async (req, res, next) => {
       .json({ success: true, message: response, accessToken: token });
   } catch (err) {
     console.log(err);
-    // res
-    //   .status(500)
-    //   .json({ err: "Something went wrong. Please try again later." });
+    res
+      .status(500)
+      .json({ err: "Something went wrong. Please try again later." });
   }
 };
 
@@ -214,9 +214,3 @@ exports.deleteUserById = async (req, res, next) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-
-//! To Be Done
-exports.addInterest = (req, res, next) => {};
-
-//! To Be Done
-exports.removeInterest = (req, res, next) => {};
