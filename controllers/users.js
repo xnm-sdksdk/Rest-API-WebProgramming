@@ -130,12 +130,8 @@ exports.loginUser = async (req, res, next) => {
 // Get All
 exports.getUsers = async (req, res, next) => {
   try {
-    if (req.loggedUser.role !== 1 && req.loggedUser.role !== 2) {
-      const users = await User.find();
-      res.status(200).json(users);
-    } else {
-      res.status(403).json({ success: false, message: "Permission denied." });
-    }
+    const users = await User.find();
+    res.status(200).json(users);
   } catch (err) {
     res.status(500).json({ err: "Users not found!" });
   }
