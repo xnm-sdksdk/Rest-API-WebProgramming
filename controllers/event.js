@@ -40,7 +40,7 @@ exports.createEvent = async (req, res) => {
   try {
     const { title, description, location, date, time, type } = req.body;
 
-    if (req.loggedUser.role !== 1 && req.loggedUser.role !== 3) {
+    if (req.loggedUser.role !== 1) {
       if (!title) {
         return res
           .status(400)
