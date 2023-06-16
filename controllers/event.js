@@ -220,7 +220,7 @@ exports.attendEvent = async (req, res, next) => {
     console.log("User ID: " + userId);
     console.log("Event ID: " + eventId);
 
-    const user = await User.findById(userId);
+    const user = await User.findById(req.params.id);
     console.log("User: " + user);
 
     if (!user) {
