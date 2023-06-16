@@ -86,15 +86,8 @@ exports.createAccommodation = async (req, res, next) => {
         amenities: amenities,
         facilitatorId: req.params.id,
       });
-      console.log(facilitatorId);
 
       const savedAccommodation = await accommodation.save();
-
-      const user = await User.findById(req.params.id);
-      if (user) {
-        user.accommodations.push(savedAccommodation.user);
-        await user.save();
-      }
 
       const response = {
         title: accommodation.title,
