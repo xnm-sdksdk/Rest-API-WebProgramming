@@ -108,8 +108,7 @@ exports.createEvent = async (req, res) => {
 exports.updateEventById = async (req, res, next) => {
   try {
     const eventId = req.params.id;
-    if (req.loggedUser.role !== 1 && req.loggedUser.role !== 3) {
-      if (req.loggedUser.id === req.params.id) {
+    if (req.loggedUser.role !== 1 || req.loggedUser.role !== 3 || req.loggedUser.id === req.params.id) {
         const { title, description, location, date, time, type } = req.body;
         console.log(req.params.id);
 
@@ -133,7 +132,6 @@ exports.updateEventById = async (req, res, next) => {
         }
 
         res.status(200).json({ success: true, message: event });
-      }
     } else {
       res.status(403).json({ success: false, message: "Permission denied." });
     }
